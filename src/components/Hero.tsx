@@ -51,6 +51,42 @@ export default function Hero() {
   const rankingOpacity = useTransform(scrollY, [0, 100, 300], [1, 0.5, 0]);
   const rankingY = useTransform(scrollY, [0, 300], [0, 50]);
 
+  const [current, setCurrent] = useState(0);
+  const [direction, setDirection] = useState(0);
+
+  const stats = [
+    {
+      image: '/banners/ctr-drop.png',
+      title: <><span className="text-blue-300">34.5%</span> CTR Drop with AI Overviews</>,
+      desc: 'In a 2025 analysis of 300,000 keywords, AI Overviews correlate with a 34.5% drop in average CTR for the #1 result compared to similar queries without Overviews.',
+      source: {
+        url: 'https://www.linkedin.com/feed/update/urn:li:activity:7318665460118376448/',
+        label: 'View Research',
+      },
+      bg: 'bg-gradient-to-br from-blue-900 via-blue-800 to-black',
+    },
+    {
+      image: '/banners/chatgpt-users.png',
+      title: <><span className="text-blue-300">27%</span> Users Ditch Google for ChatGPT</>,
+      desc: 'More than a quarter of Americans (27%) report using AI chatbots like ChatGPT instead of traditional search engines. Consumers are shifting to conversational AI for instant answers.',
+      source: {
+        url: 'https://www.tomsguide.com/ai/new-study-reveals-people-are-ditching-google-for-the-likes-of-chatgpt-search-heres-why',
+        label: 'View Research',
+      },
+      bg: 'bg-gradient-to-br from-purple-900 via-purple-800 to-black',
+    },
+    {
+      image: '/banners/ai-overviews.png',
+      title: <>AI Overviews Cover <span className="text-blue-300">87%</span><br />of Google Searches</>,
+      desc: "AI Overviews dominate: Google's new Search Generative Experience (SGE) is everywhere in its test phase – appearing for ~87% of all queries when enabled.",
+      source: {
+        url: 'https://seo.ai/blog/search-generative-experience-sge-statistics',
+        label: 'View Research',
+      },
+      bg: 'bg-gradient-to-br from-blue-800 via-purple-800 to-black',
+    },
+  ];
+
   const typeText = useCallback(async (text: string) => {
     if (!isTyping) return;
     
@@ -462,89 +498,53 @@ export default function Hero() {
 
       {/* Why Now Section - Swipeable Carousel */}
       <section className="relative w-full px-0 bg-black">
-        {(() => {
-          const stats = [
-            {
-              image: '/banners/ctr-drop.png',
-              title: <><span className="text-blue-300">34.5%</span> CTR Drop with AI Overviews</>,
-              desc: 'In a 2025 analysis of 300,000 keywords, AI Overviews correlate with a 34.5% drop in average CTR for the #1 result compared to similar queries without Overviews.',
-              source: {
-                url: 'https://www.linkedin.com/feed/update/urn:li:activity:7318665460118376448/',
-                label: 'View Research',
-              },
-              bg: 'bg-gradient-to-br from-blue-900 via-blue-800 to-black',
-            },
-            {
-              image: '/banners/chatgpt-users.png',
-              title: <><span className="text-blue-300">27%</span> Users Ditch Google for ChatGPT</>,
-              desc: 'More than a quarter of Americans (27%) report using AI chatbots like ChatGPT instead of traditional search engines. Consumers are shifting to conversational AI for instant answers.',
-              source: {
-                url: 'https://www.tomsguide.com/ai/new-study-reveals-people-are-ditching-google-for-the-likes-of-chatgpt-search-heres-why',
-                label: 'View Research',
-              },
-              bg: 'bg-gradient-to-br from-purple-900 via-purple-800 to-black',
-            },
-            {
-              image: '/banners/ai-overviews.png',
-              title: <>AI Overviews Cover <span className="text-blue-300">87%</span><br />of Google Searches</>,
-              desc: "AI Overviews dominate: Google's new Search Generative Experience (SGE) is everywhere in its test phase – appearing for ~87% of all queries when enabled.",
-              source: {
-                url: 'https://seo.ai/blog/search-generative-experience-sge-statistics',
-                label: 'View Research',
-              },
-              bg: 'bg-gradient-to-br from-blue-800 via-purple-800 to-black',
-            },
-          ];
-          const [current, setCurrent] = useState(0);
-          const [direction, setDirection] = useState(0);
-          const go = (i: number) => {
-            setDirection(i);
-            setCurrent((current + i + stats.length) % stats.length);
-          };
-          return (
-            <div className="relative w-full min-h-[480px] flex flex-col justify-center overflow-hidden py-20 md:py-28">
-              {/* Full-bleed background image */}
-              <Image
-                src={stats[current].image}
-                alt=""
-                fill
-                className="object-cover w-full h-full absolute inset-0 z-0"
-                priority
-              />
-              {/* Dark overlay */}
-              <div className="absolute inset-0 bg-black/70 z-10" />
-              {/* Content */}
-              <div className="relative z-20 w-full h-full flex flex-col justify-center items-start px-4 md:px-24">
-                <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white mb-4 drop-shadow-lg text-left leading-tight max-w-4xl">
-                  {stats[current].title}
-                </h2>
-                <div className="text-lg md:text-xl text-white/90 mb-4 max-w-2xl drop-shadow-md text-left">
-                  {stats[current].desc}
-              </div>
-                <div className="mb-6">
-                  <a href={stats[current].source.url} target="_blank" rel="noopener noreferrer" className="inline-block text-sm font-semibold text-blue-200 underline hover:text-white transition-colors">
-                    {stats[current].source.label}
-                  </a>
+        <div className="relative w-full min-h-[480px] flex flex-col justify-center overflow-hidden py-20 md:py-28">
+          {/* Full-bleed background image */}
+          <Image
+            src={stats[current].image}
+            alt=""
+            fill
+            className="object-cover w-full h-full absolute inset-0 z-0"
+            priority
+          />
+          {/* Dark overlay */}
+          <div className="absolute inset-0 bg-black/70 z-10" />
+          {/* Content */}
+          <div className="relative z-20 w-full h-full flex flex-col justify-center items-start px-4 md:px-24">
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white mb-4 drop-shadow-lg text-left leading-tight max-w-4xl">
+              {stats[current].title}
+            </h2>
+            <div className="text-lg md:text-xl text-white/90 mb-4 max-w-2xl drop-shadow-md text-left">
+              {stats[current].desc}
             </div>
-                <button
-                  type="button"
-                  onClick={() => setShowBooking(true)}
-                  className="px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white text-lg font-bold rounded-lg shadow-lg transition-colors"
-                >
-                  Contact us to learn more
-                </button>
-              </div>
-              {/* Arrows */}
-              <button onClick={() => go(-1)} className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/30 hover:bg-white/60 text-white rounded-full p-2 shadow-lg z-20 transition-all"><svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg></button>
-              <button onClick={() => go(1)} className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/30 hover:bg-white/60 text-white rounded-full p-2 shadow-lg z-20 transition-all"><svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg></button>
-              <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2 z-20">
-                {stats.map((_, i: number) => (
-                  <button key={i} onClick={() => setCurrent(i)} className={`w-3 h-3 rounded-full transition-all ${i === current ? 'bg-white' : 'bg-white/40'}`}></button>
-                ))}
-              </div>
+            <div className="mb-6">
+              <a href={stats[current].source.url} target="_blank" rel="noopener noreferrer" className="inline-block text-sm font-semibold text-blue-200 underline hover:text-white transition-colors">
+                {stats[current].source.label}
+              </a>
             </div>
-          );
-        })()}
+            <button
+              type="button"
+              onClick={() => setShowBooking(true)}
+              className="px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white text-lg font-bold rounded-lg shadow-lg transition-colors"
+            >
+              Contact us to learn more
+            </button>
+          </div>
+          {/* Arrows */}
+          <button onClick={() => {
+            setDirection(-1);
+            setCurrent((current + stats.length - 1) % stats.length);
+          }} className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/30 hover:bg-white/60 text-white rounded-full p-2 shadow-lg z-20 transition-all"><svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg></button>
+          <button onClick={() => {
+            setDirection(1);
+            setCurrent((current + 1) % stats.length);
+          }} className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/30 hover:bg-white/60 text-white rounded-full p-2 shadow-lg z-20 transition-all"><svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg></button>
+          <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2 z-20">
+            {stats.map((_, i: number) => (
+              <button key={i} onClick={() => setCurrent(i)} className={`w-3 h-3 rounded-full transition-all ${i === current ? 'bg-white' : 'bg-white/40'}`}></button>
+            ))}
+          </div>
+        </div>
       </section>
 
       {/* Trusted By Section */}
