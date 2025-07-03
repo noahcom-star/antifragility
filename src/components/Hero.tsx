@@ -330,11 +330,15 @@ export default function Hero() {
         <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4 text-center">
           Antifragility Labs: GEO + SEO for the AI Era
         </h2>
-        <p className="text-gray-500 mb-12 text-lg md:text-xl text-center max-w-4xl mx-auto">
+        <p className="text-gray-500 mb-12 text-lg md:text-xl text-center max-w-full whitespace-normal break-words px-2 sm:px-0 mx-auto">
           We don't just optimize for Google—we optimize for every search platform, human and AI. Our<br />
-          <span className="whitespace-nowrap">unique approach blends Generative Engine Optimization (GEO) and Search Engine Optimization (SEO).</span>
+          <span className="whitespace-normal break-words">
+            unique approach blends Generative Engine Optimization (GEO) and Search Engine Optimization (SEO).
+          </span>
           <br className="hidden md:block" />
-          <span className="font-semibold text-blue-600">Double your discovery. Future-proof your brand.</span>
+          <div className="font-semibold text-blue-600 whitespace-normal break-words block mt-2">
+            Double your discovery. Future-proof your brand.
+          </div>
         </p>
         <div className="w-full">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-16 px-6 md:px-16 justify-center">
