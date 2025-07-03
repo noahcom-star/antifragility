@@ -336,10 +336,10 @@ export default function Hero() {
           <br className="hidden md:block" />
           <span className="font-semibold text-blue-600">Double your discovery. Future-proof your brand.</span>
         </p>
-        <div className="w-full overflow-x-auto scrollbar-hide">
-          <div className="flex flex-row gap-8 md:gap-16 min-w-[900px] md:min-w-[1200px] px-6 md:px-16 justify-center">
+        <div className="w-full">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-16 px-6 md:px-16 justify-center">
             {/* GEO + SEO, Unified */}
-            <div className="relative flex-shrink-0 w-[340px] md:w-[420px] h-[380px] md:h-[420px] rounded-3xl overflow-hidden border border-blue-100 bg-gradient-to-br from-blue-50 via-blue-100 to-purple-50 flex flex-col justify-end">
+            <div className="relative w-full h-[380px] md:h-[420px] rounded-3xl overflow-hidden border border-blue-100 bg-gradient-to-br from-blue-50 via-blue-100 to-purple-50 flex flex-col justify-end">
               {/* Illustration: Google + AI Result, visually unified */}
               <svg className="absolute inset-0 w-full h-full object-cover" viewBox="0 0 420 420" fill="none" xmlns="http://www.w3.org/2000/svg">
                 {/* Google Result */}
@@ -369,7 +369,7 @@ export default function Hero() {
               </div>
             </div>
             {/* AI-First Content & Trust */}
-            <div className="relative flex-shrink-0 w-[340px] md:w-[420px] h-[380px] md:h-[420px] rounded-3xl overflow-hidden border border-purple-100 bg-gradient-to-br from-purple-50 via-blue-50 to-white flex flex-col justify-end">
+            <div className="relative w-full h-[380px] md:h-[420px] rounded-3xl overflow-hidden border border-purple-100 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 flex flex-col justify-end">
               {/* Improved Illustration: AI answer box with citation and trust badge */}
               <svg className="absolute inset-0 w-full h-full object-cover" viewBox="0 0 420 420" fill="none" xmlns="http://www.w3.org/2000/svg">
                 {/* Glow/gradient behind answer box */}
@@ -400,7 +400,7 @@ export default function Hero() {
               </div>
             </div>
             {/* Compounding Growth */}
-            <div className="relative flex-shrink-0 w-[340px] md:w-[420px] h-[380px] md:h-[420px] rounded-3xl overflow-hidden border border-pink-100 bg-gradient-to-br from-pink-50 via-purple-50 to-blue-50 flex flex-col justify-end">
+            <div className="relative w-full h-[380px] md:h-[420px] rounded-3xl overflow-hidden border border-pink-100 bg-gradient-to-br from-pink-50 via-purple-50 to-blue-50 flex flex-col justify-end">
               {/* Illustration: Growth Chart */}
               <svg className="absolute inset-0 w-full h-full object-cover" viewBox="0 0 420 420" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <rect x="60" y="80" width="300" height="80" rx="16" fill="#fff" fillOpacity="0.95" />
