@@ -5,10 +5,13 @@ import Link from 'next/link';
 import Image from 'next/image';
 
 const navItems = [
-  { name: 'Why Us?', href: '#why-us' },
-  { name: 'Pricing', href: '/pricing' },
+  { name: 'Why Us?', href: '#why-antifragility' },
   { name: 'FAQs', href: '#faqs' },
-  { name: 'Contact Us', href: '#contact' },
+  { 
+    name: 'Contact Us', 
+    href: 'https://calendly.com/noahbarbaros/30min',
+    isExternal: true 
+  },
 ];
 
 export default function Navigation() {
@@ -28,13 +31,25 @@ export default function Navigation() {
           
           <div className="hidden md:flex items-center space-x-8">
             {navItems.map((item) => (
-              <Link
-                key={item.name}
-                href={item.href}
-                className="text-gray-700 font-medium hover:text-blue-600 transition-colors"
-              >
-                {item.name}
-              </Link>
+              item.isExternal ? (
+                <a
+                  key={item.name}
+                  href={item.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-700 font-medium hover:text-blue-600 transition-colors"
+                >
+                  {item.name}
+                </a>
+              ) : (
+                <Link
+                  key={item.name}
+                  href={item.href}
+                  className="text-gray-700 font-medium hover:text-blue-600 transition-colors"
+                >
+                  {item.name}
+                </Link>
+              )
             ))}
           </div>
         </div>

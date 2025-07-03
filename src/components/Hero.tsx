@@ -175,7 +175,9 @@ export default function Hero() {
               </h1>
 
               <p className="text-gray-600 text-lg md:text-xl mb-6 max-w-4xl mx-auto">
-                We blend Generative Engine Optimization (GEO) and Search Engine Optimization (SEO) to build growth systems that scale with you — and the AI era.
+                We blend Generative Engine Optimization (GEO)
+                <br />
+                and <span className="whitespace-nowrap">Search Engine Optimization (SEO).</span> to build growth systems that scale with you — and the AI era.
               </p>
             </motion.div>
 
@@ -324,62 +326,96 @@ export default function Hero() {
       </div>
 
       {/* Antifragility Value Timeline Section (Horizontal Scroll) */}
-      <section id="geo-seo-section" className="relative w-full bg-white py-20 md:py-28 mt-20 md:mt-32 mb-8 md:mb-12">
+      <section id="geo-seo-section" className="relative w-full py-20 md:py-28 mt-20 md:mt-32 mb-8 md:mb-12">
         <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4 text-center">
           Antifragility Labs: GEO + SEO for the AI Era
         </h2>
         <p className="text-gray-500 mb-12 text-lg md:text-xl text-center max-w-4xl mx-auto">
-          We don't just optimize for Google—we optimize for every search platform, human and AI. Our unique approach blends Generative Engine Optimization (GEO) and Search Engine Optimization (SEO) to maximize your visibility, trust, and growth in both traditional and generative search. 
+          We don't just optimize for Google—we optimize for every search platform, human and AI. Our<br />
+          <span className="whitespace-nowrap">unique approach blends Generative Engine Optimization (GEO) and Search Engine Optimization (SEO).</span>
           <br className="hidden md:block" />
           <span className="font-semibold text-blue-600">Double your discovery. Future-proof your brand.</span>
         </p>
         <div className="w-full overflow-x-auto scrollbar-hide">
-          <div className="flex flex-row gap-8 md:gap-16 min-w-[900px] md:min-w-[1200px] px-6 md:px-16">
+          <div className="flex flex-row gap-8 md:gap-16 min-w-[900px] md:min-w-[1200px] px-6 md:px-16 justify-center">
             {/* GEO + SEO, Unified */}
-            <motion.div
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.1 }}
-              viewport={{ once: true }}
-              className="card-wipe group flex-shrink-0 w-[320px] md:w-[400px] relative rounded-3xl overflow-hidden shadow-lg border border-blue-100 px-8 py-12 flex flex-col items-center justify-center text-center transition-all duration-300 hover:scale-105 hover:-translate-y-2 hover:shadow-2xl"
-            >
-              <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-blue-100 to-purple-50" />
-              <div className="relative z-10 flex flex-col items-center">
-                <div className="w-14 h-14 bg-blue-50 rounded-full flex items-center justify-center mb-6 text-3xl text-blue-500">🌐</div>
+            <div className="relative flex-shrink-0 w-[340px] md:w-[420px] h-[380px] md:h-[420px] rounded-3xl overflow-hidden border border-blue-100 bg-gradient-to-br from-blue-50 via-blue-100 to-purple-50 flex flex-col justify-end">
+              {/* Illustration: Google + AI Result, visually unified */}
+              <svg className="absolute inset-0 w-full h-full object-cover" viewBox="0 0 420 420" fill="none" xmlns="http://www.w3.org/2000/svg">
+                {/* Google Result */}
+                <rect x="36" y="60" width="150" height="70" rx="10" fill="#fff" fillOpacity="0.97" />
+                <rect x="50" y="80" width="90" height="14" rx="7" fill="#3b82f6" />
+                <rect x="50" y="100" width="60" height="10" rx="5" fill="#22c55e" />
+                <rect x="50" y="115" width="110" height="8" rx="4" fill="#a3a3a3" fillOpacity="0.3" />
+                <rect x="50" y="127" width="80" height="8" rx="4" fill="#a3a3a3" fillOpacity="0.2" />
+                {/* Divider */}
+                <rect x="200" y="70" width="2" height="60" rx="1" fill="#a78bfa" fillOpacity="0.18" />
+                {/* AI/LLM Result */}
+                <rect x="234" y="60" width="150" height="70" rx="10" fill="#fff" fillOpacity="0.97" />
+                <rect x="250" y="80" width="60" height="14" rx="7" fill="#a78bfa" />
+                <rect x="315" y="80" width="30" height="14" rx="7" fill="#6366f1" fillOpacity="0.18" />
+                <rect x="250" y="100" width="110" height="10" rx="5" fill="#6366f1" fillOpacity="0.12" />
+                <rect x="250" y="115" width="80" height="8" rx="4" fill="#a3a3a3" fillOpacity="0.2" />
+                {/* AI badge */}
+                <rect x="355" y="65" width="28" height="18" rx="6" fill="#a78bfa" fillOpacity="0.18" />
+                <text x="369" y="78" textAnchor="middle" fontSize="10" fill="#7c3aed" fontWeight="bold">AI</text>
+                {/* Unified background */}
+                <rect x="36" y="160" width="348" height="180" rx="18" fill="#e0e7ff" fillOpacity="0.22" />
+              </svg>
+              <div className="relative z-10 p-8 pt-32 flex flex-col items-center justify-end bg-gradient-to-t from-white/90 via-white/70 to-transparent">
+                <span className="text-xs font-bold uppercase tracking-widest bg-blue-100 text-blue-700 px-3 py-1 rounded-full mb-3">Unified Approach</span>
                 <h3 className="text-2xl font-semibold text-gray-900 mb-4">GEO + SEO, Unified</h3>
                 <p className="text-gray-600 text-base">We optimize for both LLMs and search engines, so you're found by humans and AI alike—on Google, ChatGPT, Gemini, and beyond.</p>
               </div>
-            </motion.div>
+            </div>
             {/* AI-First Content & Trust */}
-            <motion.div
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.2 }}
-              viewport={{ once: true }}
-              className="card-wipe group flex-shrink-0 w-[320px] md:w-[400px] relative rounded-3xl overflow-hidden shadow-lg border border-blue-100 px-8 py-12 flex flex-col items-center justify-center text-center transition-all duration-300 hover:scale-105 hover:-translate-y-2 hover:shadow-2xl"
-            >
-              <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-purple-50 to-purple-100" />
-              <div className="relative z-10 flex flex-col items-center">
-                <div className="w-14 h-14 bg-blue-50 rounded-full flex items-center justify-center mb-6 text-3xl text-blue-500">🤖</div>
+            <div className="relative flex-shrink-0 w-[340px] md:w-[420px] h-[380px] md:h-[420px] rounded-3xl overflow-hidden border border-purple-100 bg-gradient-to-br from-purple-50 via-blue-50 to-white flex flex-col justify-end">
+              {/* Improved Illustration: AI answer box with citation and trust badge */}
+              <svg className="absolute inset-0 w-full h-full object-cover" viewBox="0 0 420 420" fill="none" xmlns="http://www.w3.org/2000/svg">
+                {/* Glow/gradient behind answer box */}
+                <ellipse cx="210" cy="120" rx="120" ry="48" fill="#a78bfa" fillOpacity="0.12" />
+                {/* Main AI answer box */}
+                <rect x="70" y="70" width="280" height="80" rx="18" fill="#fff" fillOpacity="0.98" />
+                {/* AI badge */}
+                <rect x="90" y="85" width="38" height="20" rx="8" fill="#a78bfa" fillOpacity="0.18" />
+                <text x="109" y="100" textAnchor="middle" fontSize="12" fill="#7c3aed" fontWeight="bold">AI</text>
+                {/* Answer lines */}
+                <rect x="140" y="90" width="140" height="14" rx="7" fill="#a78bfa" fillOpacity="0.18" />
+                <rect x="140" y="110" width="110" height="10" rx="5" fill="#6366f1" fillOpacity="0.12" />
+                {/* Citation badge */}
+                <circle cx="320" cy="100" r="13" fill="#3b82f6" fillOpacity="0.18" />
+                <text x="320" y="105" textAnchor="middle" fontSize="12" fill="#6366f1" fontWeight="bold">1</text>
+                {/* Trust badge (shield with checkmark) */}
+                <g>
+                  <path d="M370 90 l10 8 v10 a12 12 0 0 1 -10 10 a12 12 0 0 1 -10 -10 v-10 z" fill="#a78bfa" fillOpacity="0.18" />
+                  <path d="M370 104 l4 4 l-8-8" stroke="#6366f1" strokeWidth="2" fill="none" />
+                </g>
+                {/* Subtle background card for context */}
+                <rect x="60" y="180" width="300" height="160" rx="18" fill="#ede9fe" fillOpacity="0.25" />
+              </svg>
+              <div className="relative z-10 p-8 pt-32 flex flex-col items-center justify-end bg-gradient-to-t from-white/90 via-white/70 to-transparent">
+                <span className="text-xs font-bold uppercase tracking-widest bg-purple-100 text-purple-700 px-3 py-1 rounded-full mb-3">AI-First</span>
                 <h3 className="text-2xl font-semibold text-gray-900 mb-4">AI-First Content & Trust</h3>
                 <p className="text-gray-600 text-base">We structure and enhance your content for AI comprehension, citation, and trust—so you're recommended by the next generation of search.</p>
               </div>
-            </motion.div>
+            </div>
             {/* Compounding Growth */}
-            <motion.div
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.3 }}
-              viewport={{ once: true }}
-              className="card-wipe group flex-shrink-0 w-[320px] md:w-[400px] relative rounded-3xl overflow-hidden shadow-lg border border-blue-100 px-8 py-12 flex flex-col items-center justify-center text-center transition-all duration-300 hover:scale-105 hover:-translate-y-2 hover:shadow-2xl"
-            >
-              <div className="absolute inset-0 bg-gradient-to-br from-purple-50 via-purple-100 to-purple-100" />
-              <div className="relative z-10 flex flex-col items-center">
-                <div className="w-14 h-14 bg-purple-50 rounded-full flex items-center justify-center mb-6 text-3xl text-blue-500">🚀</div>
+            <div className="relative flex-shrink-0 w-[340px] md:w-[420px] h-[380px] md:h-[420px] rounded-3xl overflow-hidden border border-pink-100 bg-gradient-to-br from-pink-50 via-purple-50 to-blue-50 flex flex-col justify-end">
+              {/* Illustration: Growth Chart */}
+              <svg className="absolute inset-0 w-full h-full object-cover" viewBox="0 0 420 420" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="60" y="80" width="300" height="80" rx="16" fill="#fff" fillOpacity="0.95" />
+                <path d="M90 150L170 110L250 170L330 90" stroke="#a78bfa" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round" />
+                <circle cx="170" cy="110" r="8" fill="#6366f1" fillOpacity="0.18" />
+                <circle cx="250" cy="170" r="8" fill="#6366f1" fillOpacity="0.18" />
+                <circle cx="330" cy="90" r="8" fill="#3b82f6" fillOpacity="0.18" />
+                <rect x="60" y="180" width="300" height="160" rx="18" fill="#f3e8ff" fillOpacity="0.25" />
+              </svg>
+              <div className="relative z-10 p-8 pt-32 flex flex-col items-center justify-end bg-gradient-to-t from-white/90 via-white/70 to-transparent">
+                <span className="text-xs font-bold uppercase tracking-widest bg-pink-100 text-pink-700 px-3 py-1 rounded-full mb-3">Growth Engine</span>
                 <h3 className="text-2xl font-semibold text-gray-900 mb-4">Compounding Growth</h3>
                 <p className="text-gray-600 text-base">Our systems adapt and improve over time, compounding your results and keeping you ahead of every search trend—human or AI.</p>
               </div>
-            </motion.div>
+            </div>
           </div>
         </div>
       </section>
@@ -493,8 +529,8 @@ export default function Hero() {
               Your all-in-one agency for ranking from search engines like Google, to AI like ChatGPT.
             </h2>
           </div>
-              </div>
-            </div>
+        </div>
+      </div>
 
       {/* Why Now Section - Swipeable Carousel */}
       <section className="relative w-full px-0 bg-black">
@@ -560,25 +596,131 @@ export default function Hero() {
         </div>
       </section>
 
+      {/* Why Antifragility Section */}
+      <section id="why-antifragility" className="relative w-full py-28 px-0 bg-gradient-to-br from-blue-50 via-purple-50 to-white overflow-hidden">
+        {/* Abstract SVG background illustration */}
+        <svg className="absolute left-1/2 top-0 -translate-x-1/2 opacity-20 w-[900px] h-[340px] pointer-events-none select-none" viewBox="0 0 900 340" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <ellipse cx="450" cy="170" rx="420" ry="120" fill="url(#antifragile-gradient)" />
+          <path d="M120 200 Q 450 60 780 200" stroke="#6366f1" strokeWidth="8" strokeLinecap="round" fill="none"/>
+          <path d="M200 120 Q 450 300 700 120" stroke="#a78bfa" strokeWidth="6" strokeLinecap="round" fill="none"/>
+          <defs>
+            <linearGradient id="antifragile-gradient" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stopColor="#c7d2fe" />
+              <stop offset="100%" stopColor="#f3e8ff" />
+            </linearGradient>
+          </defs>
+        </svg>
+        <div className="relative max-w-3xl mx-auto px-6">
+          {/* Accent chip */}
+          <div className="flex justify-center mb-6">
+            <span className="flex items-center gap-2 px-4 py-2 bg-white/70 backdrop-blur-md border border-blue-200 rounded-full text-blue-700 font-semibold shadow-sm text-sm">
+              <svg className="w-5 h-5 text-blue-500" fill="none" viewBox="0 0 20 20" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 4v8m0 0l3-3m-3 3l-3-3" /></svg>
+              Our Philosophy
+            </span>
+          </div>
+          {/* Glassmorphic card */}
+          <div className="bg-white/80 backdrop-blur-md rounded-2xl shadow-xl border border-blue-100 px-8 py-14 text-center">
+            <h2 className="text-2xl md:text-3xl font-bold mb-6 text-gray-900 leading-tight">Why Antifragility</h2>
+            <p className="text-lg md:text-xl text-gray-700 mb-6 leading-relaxed font-normal">Most companies aim to be resilient — to survive shocks. We aim higher.</p>
+            <p className="text-base md:text-lg text-gray-600 mb-8 leading-relaxed font-normal">Antifragile systems don't just survive stress — they get stronger because of it. That's the core of how we operate: every client project, failed test, or algorithm shift becomes a feedback loop. We learn. We adapt. We evolve.</p>
+            <p className="text-lg md:text-xl text-blue-700 font-semibold leading-relaxed mt-10 underline decoration-blue-300 decoration-4">In an ecosystem as unpredictable as AI search, fragility breaks, resilience endures, but antifragility wins.</p>
+          </div>
+        </div>
+      </section>
+
       {/* FAQ Accordion Section */}
       <section id="faqs" className="w-full bg-white py-16 px-4">
         <div className="max-w-3xl mx-auto">
           <h2 className="text-3xl md:text-4xl font-extrabold text-center mb-10 text-gray-900">Frequently Asked Questions</h2>
           <FAQAccordion />
-            </div>
-          </section>
+        </div>
+      </section>
 
       {/* 2nd CTA Section */}
-      <section className="w-full bg-gradient-to-r from-blue-50 to-purple-100 py-16 px-4 flex flex-col items-center justify-center">
-        <h3 className="text-2xl md:text-3xl font-bold text-center text-gray-900 mb-6">Let's build your GEO moat before your competitors do.</h3>
-        <a
-          href="https://calendly.com/noah-barbaros/introductory-chat?"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white text-lg font-bold rounded-lg shadow-lg hover:opacity-90 transition-all mb-2"
-        >
-          Book Your Free GEO & SEO Audit
-        </a>
+      <section className="w-full flex flex-col items-center justify-center py-24 px-4 bg-gradient-to-br from-blue-50 via-white to-purple-50">
+        <div className="relative w-full max-w-5xl flex flex-col md:flex-row items-center justify-between gap-24 mx-auto">
+          {/* Left: Immersive Live Dashboard Mockup */}
+          <div className="flex-1 w-full md:w-1/2 flex justify-center items-center mb-12 md:mb-0">
+            <div className="relative group">
+              {/* Glassmorphic background glow */}
+              <div className="absolute -inset-4 bg-gradient-to-br from-blue-200/30 via-purple-200/20 to-white/0 rounded-3xl blur-2xl z-0" />
+              <div className="relative w-full max-w-lg bg-white/80 backdrop-blur-md rounded-3xl shadow-2xl border border-blue-100 p-8 flex flex-col gap-6 items-center justify-center transition-transform duration-300 group-hover:scale-105 group-hover:shadow-blue-200/60" style={{boxShadow: '0 8px 40px 0 rgba(80,100,200,0.10)'}}>
+                {/* Large Chart (shorter height) */}
+                <div className="w-full h-36 md:h-44 flex items-center justify-center mb-4">
+                  <svg viewBox="0 0 420 140" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
+                    <defs>
+                      <linearGradient id="chart-gradient" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stopColor="#6366f1" stopOpacity="0.18" />
+                        <stop offset="100%" stopColor="#6366f1" stopOpacity="0.02" />
+                      </linearGradient>
+                    </defs>
+                    <path d="M20 110L80 40L140 80L200 20L260 80L320 30L400 90" stroke="#6366f1" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round"/>
+                    <polyline points="20,110 80,40 140,80 200,20 260,80 320,30 400,90" fill="url(#chart-gradient)" />
+                    <circle cx="80" cy="40" r="10" fill="#6366f1" fillOpacity="0.18" />
+                    <circle cx="200" cy="20" r="10" fill="#3b82f6" fillOpacity="0.18" />
+                    <circle cx="320" cy="30" r="10" fill="#22c55e" fillOpacity="0.18" />
+                    <circle cx="400" cy="90" r="10" fill="#a78bfa" fillOpacity="0.18" />
+                  </svg>
+                </div>
+                <div className="mt-2 text-xs text-blue-500 font-mono bg-blue-50/60 px-3 py-1 rounded-full inline-block">Live Data</div>
+                {/* Metric Cards */}
+                <div className="flex flex-col gap-4 w-full">
+                  <div className="flex flex-row gap-4 w-full">
+                    {/* Revenue Card */}
+                    <div className="flex-1 bg-white/90 rounded-xl p-4 shadow border border-blue-100 flex flex-col items-center">
+                      <span className="text-xs font-semibold text-gray-500 mb-1">Revenue</span>
+                      <span className="text-xl md:text-2xl font-bold text-blue-700 flex items-center gap-1">$8,420 <svg className="w-5 h-5 text-green-500" fill="none" viewBox="0 0 20 20" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 10l4 4 6-8" /></svg></span>
+                      <span className="text-xs text-green-600 font-semibold mt-1">+12% this month</span>
+                    </div>
+                    {/* Leads Card */}
+                    <div className="flex-1 bg-white/90 rounded-xl p-4 shadow border border-purple-100 flex flex-col items-center">
+                      <span className="text-xs font-semibold text-gray-500 mb-1">Leads</span>
+                      <span className="text-xl md:text-2xl font-bold text-purple-600 flex items-center gap-1">+127 <svg className="w-5 h-5 text-green-500" fill="none" viewBox="0 0 20 20" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 10l4 4 6-8" /></svg></span>
+                      <span className="text-xs text-green-600 font-semibold mt-1">+8% this month</span>
+                    </div>
+                  </div>
+                  <div className="flex flex-row gap-4 w-full">
+                    {/* AI Citations Card */}
+                    <div className="flex-1 bg-white/90 rounded-xl p-4 shadow border border-green-100 flex flex-col items-center">
+                      <span className="text-xs font-semibold text-gray-500 mb-1">AI Citations</span>
+                      <span className="text-xl md:text-2xl font-bold text-green-600 flex items-center gap-1">23 <svg className="w-5 h-5 text-green-500" fill="none" viewBox="0 0 20 20" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 10l4 4 6-8" /></svg></span>
+                      <span className="text-xs text-green-600 font-semibold mt-1">+5 this week</span>
+                    </div>
+                    {/* Activity Card */}
+                    <div className="flex-1 bg-gradient-to-br from-blue-50 via-purple-50 to-white rounded-xl p-4 shadow border border-blue-100 flex flex-col items-center justify-center">
+                      <span className="text-xs font-semibold text-blue-700 mb-1">Status</span>
+                      <span className="text-base font-bold text-blue-700 flex items-center gap-1"><span className="w-2 h-2 bg-green-400 rounded-full animate-pulse inline-block"></span> Live</span>
+                      <span className="text-xs text-blue-500 mt-1">AI picking up your content</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          {/* Right: Text and CTA */}
+          <div className="flex-1 w-full md:w-1/2 flex flex-col items-start justify-center md:pl-12">
+            {/* Accent bar and icon */}
+            <div className="flex items-center gap-2 mb-4">
+              <span className="w-2 h-8 bg-blue-600 rounded-full" />
+              <svg className="w-7 h-7 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M12 19V5m0 0l-7 7m7-7l7 7" /></svg>
+            </div>
+            <h3 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-6 leading-tight">SEO & GEO that actually drives revenue.</h3>
+            <p className="text-xl md:text-2xl text-gray-700 mb-10 max-w-xl leading-relaxed">We don't just optimize for rankings—we build systems that deliver measurable growth, more leads, and real business results. Ready to see the impact?</p>
+            <a
+              href="https://calendly.com/noah-barbaros/introductory-chat?"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-3 px-12 py-6 bg-blue-700 text-white text-2xl font-bold rounded-xl shadow-lg hover:bg-blue-800 transition-all mt-2"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                <rect x="3" y="4" width="18" height="18" rx="4"/>
+                <path d="M16 2v4M8 2v4M3 10h18"/>
+              </svg>
+              Book your free strategy call
+            </a>
+            <span className="mt-4 text-base text-gray-500">No sales pitch. Just actionable insights.</span>
+          </div>
+        </div>
       </section>
 
       {/* Booking Modal */}
@@ -610,7 +752,7 @@ export default function Hero() {
                 style={{ minHeight: '70vh' }}
               />
             </div>
-            </div>
+          </div>
         </div>
       )}
 
