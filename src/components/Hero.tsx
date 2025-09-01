@@ -82,12 +82,12 @@ const PAUSE_DURATION = 3000;
 const PAUSE_BEFORE_DELETE = 2000;
 
 const logos = [
-  { src: '/logos/openai.png', alt: 'OpenAI', className: 'h-16 md:h-24 lg:h-[350px]' },
-  { src: '/logos/google.png', alt: 'Google', className: 'h-14 md:h-20 lg:h-[300px] ml-2' },
-  { src: '/logos/bing.png', alt: 'Bing', className: 'h-20 md:h-32 lg:h-[900px]' },
-  { src: '/logos/claude.png', alt: 'Claude', className: 'h-16 md:h-28 lg:h-[700px]' },
-  { src: '/logos/gemini.png', alt: 'Gemini', className: 'h-16 md:h-24 lg:h-[800px] -mt-3' },
-  { src: '/logos/perplexity.png', alt: 'Perplexity', className: 'h-20 md:h-32 lg:h-[1000px]' },
+  { src: '/logos/openai.png', alt: 'OpenAI', className: 'h-[350px]' },
+  { src: '/logos/google.png', alt: 'Google', className: 'h-[300px] ml-2' },
+  { src: '/logos/bing.png', alt: 'Bing', className: 'h-[900px]' },
+  { src: '/logos/claude.png', alt: 'Claude', className: 'h-[700px]' },
+  { src: '/logos/gemini.png', alt: 'Gemini', className: 'h-[800px] -mt-3' },
+  { src: '/logos/perplexity.png', alt: 'Perplexity', className: 'h-[1000px]' },
 ];
 
 export default function Hero() {
@@ -110,7 +110,6 @@ export default function Hero() {
   const [current, setCurrent] = useState(0);
   const [direction, setDirection] = useState(0);
   const [currentService, setCurrentService] = useState(0);
-  const [touchStart, setTouchStart] = useState<number | null>(null);
 
   const stats = [
     {
@@ -381,7 +380,7 @@ export default function Hero() {
               transition={{ duration: 1, delay: 1.2 }}
               className="w-full max-w-5xl mx-auto mb-10"
             >
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 items-center justify-items-center gap-x-4 md:gap-x-8 lg:gap-x-24 gap-y-4">
+              <div className="grid grid-cols-6 items-center justify-items-center gap-x-24">
                 {logos.map((logo, index) => (
                   <motion.div
                     key={logo.alt}
@@ -403,6 +402,8 @@ export default function Hero() {
                         height: '80px',
                         width: '120px',
                         display: 'block',
+                        transform: logo.alt === 'Claude' || logo.alt === 'Perplexity' ? 'scale(2.2)' : logo.alt === 'Bing' ? 'scale(2.2)' : 'scale(1.8)',
+                        transformOrigin: 'center center',
                         objectFit: 'contain'
                       }}
                     />
@@ -501,44 +502,44 @@ export default function Hero() {
                           <div className="relative w-80 h-80 flex items-center justify-center">
                             {/* Center circle - Antifragility Labs Logo */}
                             <div className="w-32 h-32 rounded-full shadow-xl flex items-center justify-center border-3 border-blue-200 z-10" style={{backgroundColor: '#1d40b0'}}>
-                              <img src="/Orbit/antifragility.png" alt="Antifragility Labs" className="object-contain w-20 h-20" />
+                              <img src="/orbit/antifragility.png" alt="Antifragility Labs" className="object-contain w-20 h-20" />
                             </div>
                             
                             {/* Orbiting logos - Much larger and further apart */}
                                                                                     <div className="absolute top-0 left-[50%] transform -translate-x-1/2">
                               <div className="w-16 h-16 bg-white rounded-full shadow-lg flex items-center justify-center border border-gray-200 hover:shadow-xl transition-shadow">
-                                <img src="/Orbit/Google.png" alt="Google" className="object-contain w-9 h-9" />
+                                <img src="/orbit/Google.png" alt="Google" className="object-contain w-9 h-9" />
                               </div>
                             </div>
                             
                             <div className="absolute top-[50%] right-0 transform -translate-y-1/2">
                               <div className="w-16 h-16 bg-white rounded-full shadow-lg flex items-center justify-center border border-gray-200 hover:shadow-xl transition-shadow">
-                                <Image src="/Orbit/Bing.png" alt="Bing" width={52} height={52} className="object-contain" />
+                                <Image src="/orbit/Bing.png" alt="Bing" width={52} height={52} className="object-contain" />
                           </div>
                           </div>
                             
                             <div className="absolute bottom-0 left-[50%] transform -translate-x-1/2">
                               <div className="w-16 h-16 bg-white rounded-full shadow-lg flex items-center justify-center border border-gray-200 hover:shadow-xl transition-shadow">
-                                <Image src="/Orbit/openai.png" alt="ChatGPT" width={42} height={42} className="object-contain" />
+                                <Image src="/orbit/openai.png" alt="ChatGPT" width={42} height={42} className="object-contain" />
                           </div>
                         </div>
                             
                             <div className="absolute top-[50%] left-0 transform -translate-y-1/2">
                               <div className="w-16 h-16 bg-white rounded-full shadow-lg flex items-center justify-center border border-gray-200 hover:shadow-xl transition-shadow">
-                                <Image src="/Orbit/claude.png" alt="Claude" width={40} height={40} className="object-contain" />
+                                <Image src="/orbit/claude.png" alt="Claude" width={40} height={40} className="object-contain" />
                       </div>
                     </div>
                             
                             {/* Diagonal positions - Same size now */}
                             <div className="absolute top-6 right-6">
                               <div className="w-16 h-16 bg-white rounded-full shadow-lg flex items-center justify-center border border-gray-200 hover:shadow-xl transition-shadow">
-                                <Image src="/Orbit/Gemini.png" alt="Gemini" width={42} height={42} className="object-contain" />
+                                <Image src="/orbit/Gemini.png" alt="Gemini" width={42} height={42} className="object-contain" />
                   </div>
                   </div>
                   
                             <div className="absolute bottom-6 left-6">
                               <div className="w-16 h-16 bg-white rounded-full shadow-lg flex items-center justify-center border border-gray-200 hover:shadow-xl transition-shadow">
-                                <Image src="/Orbit/perplexity.png" alt="Perplexity" width={48} height={48} className="object-contain" />
+                                <Image src="/orbit/perplexity.png" alt="Perplexity" width={48} height={48} className="object-contain" />
                               </div>
                             </div>
                             
@@ -845,7 +846,7 @@ export default function Hero() {
                      <div className="p-6">
                        {/* Search bar */}
                        <div className="flex items-center gap-3 mb-6">
-                         <Image src="/Orbit/Google.png" alt="Google" width={24} height={24} />
+                         <Image src="/orbit/Google.png" alt="Google" width={24} height={24} />
                          <div className="flex-1 border rounded-full px-4 py-2 text-sm text-gray-400">
                            best marketing agencies
                   </div>
@@ -971,26 +972,26 @@ export default function Hero() {
         </div>
       </section>
 
-      {/* Stats Section - Mobile Responsive */}
-      <section className="relative w-full text-white py-16 md:py-24" style={{backgroundColor: '#1d40b0'}}>
-        <div className="max-w-6xl mx-auto px-4">
-          <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center">
+      {/* Stats Section - Similar to Mailchimp */}
+      <section className="relative w-full text-white h-[568px]" style={{backgroundColor: '#1d40b0'}}>
+        <div className="max-w-6xl mx-auto px-4 h-full">
+          <div className="grid lg:grid-cols-2 gap-16 items-center h-full">
             {/* Left Side - Main Content */}
-            <div className="flex flex-col justify-center text-center lg:text-left mb-8 lg:mb-0">
-              <h2 className={`${inter.className} text-3xl md:text-4xl lg:text-5xl font-light mb-6 leading-tight`}>
+            <div className="flex flex-col justify-center">
+              <h2 className={`${inter.className} text-4xl md:text-5xl font-light mb-8 leading-tight`}>
                 Find out why we're<br />
                 <span className="font-medium">best-in-class</span>
               </h2>
-              <p className={`${inter.className} text-base md:text-lg lg:text-xl leading-relaxed opacity-90 font-light max-w-lg mx-auto lg:mx-0`}>
+              <p className={`${inter.className} text-lg md:text-xl leading-relaxed opacity-90 font-light max-w-lg`}>
                 The #1 GEO and SEO agency that gets you visibility, traffic, and sales, in both AI and search engines alike.
               </p>
             </div>
 
             {/* Right Side - Stats Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
+            <div className="flex flex-wrap justify-center">
               {/* Stat 1 */}
-              <div className="text-center lg:text-left">
-                <div className={`${inter.className} text-2xl md:text-3xl lg:text-4xl font-bold mb-2`}>
+              <div className="w-1/2 text-center lg:text-left flex flex-col justify-center" style={{marginBottom: '1rem', paddingRight: '1rem'}}>
+                <div className={`${inter.className} text-3xl md:text-4xl font-bold mb-2`}>
                   15x Growth in Impressions
                 </div>
                 <div className={`${inter.className} text-sm opacity-80 font-light`}>
@@ -999,8 +1000,8 @@ export default function Hero() {
               </div>
 
               {/* Stat 2 */}
-              <div className="text-center lg:text-left">
-                <div className={`${inter.className} text-2xl md:text-3xl lg:text-4xl font-bold mb-2`}>
+              <div className="w-1/2 text-center lg:text-left flex flex-col justify-center" style={{marginBottom: '1rem', paddingLeft: '1rem'}}>
+                <div className={`${inter.className} text-3xl md:text-4xl font-bold mb-2`}>
                   5x Increase in Clicks
                 </div>
                 <div className={`${inter.className} text-sm opacity-80 font-light`}>
@@ -1009,8 +1010,8 @@ export default function Hero() {
               </div>
 
               {/* Stat 3 */}
-              <div className="text-center lg:text-left">
-                <div className={`${inter.className} text-2xl md:text-3xl lg:text-4xl font-bold mb-2`}>
+              <div className="w-1/2 text-center lg:text-left flex flex-col justify-center" style={{marginTop: '1rem', paddingRight: '1rem'}}>
+                <div className={`${inter.className} text-3xl md:text-4xl font-bold mb-2`}>
                   Page 1 Rankings
                 </div>
                 <div className={`${inter.className} text-sm opacity-80 font-light`}>
@@ -1019,8 +1020,8 @@ export default function Hero() {
               </div>
 
               {/* Stat 4 */}
-              <div className="text-center lg:text-left">
-                <div className={`${inter.className} text-2xl md:text-3xl lg:text-4xl font-bold mb-2`}>
+              <div className="w-1/2 text-center lg:text-left flex flex-col justify-center" style={{marginTop: '1rem', paddingLeft: '1rem'}}>
+                <div className={`${inter.className} text-3xl md:text-4xl font-bold mb-2`}>
                   Over 1000 AI Citations
                 </div>
                 <div className={`${inter.className} text-sm opacity-80 font-light`}>
@@ -1045,31 +1046,7 @@ export default function Hero() {
 
       {/* Why Now Section - Smooth Auto-Carousel */}
       <section className="relative w-full px-0 bg-black">
-        <div 
-          className="relative w-full min-h-[480px] flex flex-col justify-center overflow-hidden py-20 md:py-28"
-          onTouchStart={(e: React.TouchEvent) => {
-            const touch = e.touches[0];
-            setTouchStart(touch.clientX);
-          }}
-          onTouchEnd={(e: React.TouchEvent) => {
-            if (!touchStart) return;
-            const touch = e.changedTouches[0];
-            const diff = touchStart - touch.clientX;
-            
-            if (Math.abs(diff) > 50) { // Minimum swipe distance
-              if (diff > 0) {
-                // Swipe left - next
-                setDirection(1);
-                setCurrent((current + 1) % stats.length);
-              } else {
-                // Swipe right - previous
-                setDirection(-1);
-                setCurrent((current + stats.length - 1) % stats.length);
-              }
-            }
-            setTouchStart(null);
-          }}
-        >
+        <div className="relative w-full min-h-[480px] flex flex-col justify-center overflow-hidden py-20 md:py-28">
           {/* Background images with smooth transitions */}
           <AnimatePresence mode="wait">
             <motion.div
@@ -1143,15 +1120,15 @@ export default function Hero() {
               </button>
             </motion.div>
           </AnimatePresence>
-          {/* Arrows - Hidden on mobile */}
+          {/* Arrows */}
           <button onClick={() => {
             setDirection(-1);
             setCurrent((current + stats.length - 1) % stats.length);
-          }} className="hidden md:block absolute left-4 top-1/2 -translate-y-1/2 bg-white/30 hover:bg-white/60 text-white rounded-full p-2 shadow-lg z-20 transition-all"><svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg></button>
+          }} className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/30 hover:bg-white/60 text-white rounded-full p-2 shadow-lg z-20 transition-all"><svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg></button>
           <button onClick={() => {
             setDirection(1);
             setCurrent((current + 1) % stats.length);
-          }} className="hidden md:block absolute right-4 top-1/2 -translate-y-1/2 bg-white/30 hover:bg-white/60 text-white rounded-full p-2 shadow-lg z-20 transition-all"><svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg></button>
+          }} className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/30 hover:bg-white/60 text-white rounded-full p-2 shadow-lg z-20 transition-all"><svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg></button>
           <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2 z-20">
             {stats.map((_, i: number) => (
               <button key={i} onClick={() => setCurrent(i)} className={`w-3 h-3 rounded-full transition-all ${i === current ? 'bg-white' : 'bg-white/40'}`}></button>
