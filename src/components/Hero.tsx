@@ -82,12 +82,12 @@ const PAUSE_DURATION = 3000;
 const PAUSE_BEFORE_DELETE = 2000;
 
 const logos = [
-  { src: '/logos/openai.png', alt: 'OpenAI', className: 'h-[350px]' },
-  { src: '/logos/google.png', alt: 'Google', className: 'h-[300px] ml-2' },
-  { src: '/logos/bing.png', alt: 'Bing', className: 'h-[900px]' },
-  { src: '/logos/claude.png', alt: 'Claude', className: 'h-[700px]' },
-  { src: '/logos/gemini.png', alt: 'Gemini', className: 'h-[800px] -mt-3' },
-  { src: '/logos/perplexity.png', alt: 'Perplexity', className: 'h-[1000px]' },
+  { src: '/logos/openai.png', alt: 'OpenAI', className: 'h-16 md:h-24 lg:h-[350px]' },
+  { src: '/logos/google.png', alt: 'Google', className: 'h-14 md:h-20 lg:h-[300px] ml-2' },
+  { src: '/logos/bing.png', alt: 'Bing', className: 'h-20 md:h-32 lg:h-[900px]' },
+  { src: '/logos/claude.png', alt: 'Claude', className: 'h-16 md:h-28 lg:h-[700px]' },
+  { src: '/logos/gemini.png', alt: 'Gemini', className: 'h-16 md:h-24 lg:h-[800px] -mt-3' },
+  { src: '/logos/perplexity.png', alt: 'Perplexity', className: 'h-20 md:h-32 lg:h-[1000px]' },
 ];
 
 export default function Hero() {
@@ -380,7 +380,7 @@ export default function Hero() {
               transition={{ duration: 1, delay: 1.2 }}
               className="w-full max-w-5xl mx-auto mb-10"
             >
-              <div className="grid grid-cols-6 items-center justify-items-center gap-x-24">
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 items-center justify-items-center gap-x-4 md:gap-x-8 lg:gap-x-24 gap-y-4">
                 {logos.map((logo, index) => (
                   <motion.div
                     key={logo.alt}
@@ -502,7 +502,7 @@ export default function Hero() {
                           <div className="relative w-80 h-80 flex items-center justify-center">
                             {/* Center circle - Antifragility Labs Logo */}
                             <div className="w-32 h-32 rounded-full shadow-xl flex items-center justify-center border-3 border-blue-200 z-10" style={{backgroundColor: '#1d40b0'}}>
-                              <img src="/orbit/antifragility.png" alt="Antifragility Labs" className="object-contain w-20 h-20" />
+                              <img src="/Orbit/antifragility.png" alt="Antifragility Labs" className="object-contain w-20 h-20" />
                             </div>
                             
                             {/* Orbiting logos - Much larger and further apart */}
@@ -1120,15 +1120,15 @@ export default function Hero() {
               </button>
             </motion.div>
           </AnimatePresence>
-          {/* Arrows */}
+          {/* Arrows - Hidden on mobile */}
           <button onClick={() => {
             setDirection(-1);
             setCurrent((current + stats.length - 1) % stats.length);
-          }} className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/30 hover:bg-white/60 text-white rounded-full p-2 shadow-lg z-20 transition-all"><svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg></button>
+          }} className="hidden md:block absolute left-4 top-1/2 -translate-y-1/2 bg-white/30 hover:bg-white/60 text-white rounded-full p-2 shadow-lg z-20 transition-all"><svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg></button>
           <button onClick={() => {
             setDirection(1);
             setCurrent((current + 1) % stats.length);
-          }} className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/30 hover:bg-white/60 text-white rounded-full p-2 shadow-lg z-20 transition-all"><svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg></button>
+          }} className="hidden md:block absolute right-4 top-1/2 -translate-y-1/2 bg-white/30 hover:bg-white/60 text-white rounded-full p-2 shadow-lg z-20 transition-all"><svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg></button>
           <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2 z-20">
             {stats.map((_, i: number) => (
               <button key={i} onClick={() => setCurrent(i)} className={`w-3 h-3 rounded-full transition-all ${i === current ? 'bg-white' : 'bg-white/40'}`}></button>
