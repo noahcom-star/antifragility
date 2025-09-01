@@ -508,38 +508,38 @@ export default function Hero() {
                             {/* Orbiting logos - Much larger and further apart */}
                                                                                     <div className="absolute top-0 left-[50%] transform -translate-x-1/2">
                               <div className="w-16 h-16 bg-white rounded-full shadow-lg flex items-center justify-center border border-gray-200 hover:shadow-xl transition-shadow">
-                                <img src="/orbit/Google.png" alt="Google" className="object-contain w-9 h-9" />
+                                <img src="/Orbit/Google.png" alt="Google" className="object-contain w-9 h-9" />
                               </div>
                             </div>
                             
                             <div className="absolute top-[50%] right-0 transform -translate-y-1/2">
                               <div className="w-16 h-16 bg-white rounded-full shadow-lg flex items-center justify-center border border-gray-200 hover:shadow-xl transition-shadow">
-                                <Image src="/orbit/Bing.png" alt="Bing" width={52} height={52} className="object-contain" />
+                                <Image src="/Orbit/Bing.png" alt="Bing" width={52} height={52} className="object-contain" />
                           </div>
                           </div>
                             
                             <div className="absolute bottom-0 left-[50%] transform -translate-x-1/2">
                               <div className="w-16 h-16 bg-white rounded-full shadow-lg flex items-center justify-center border border-gray-200 hover:shadow-xl transition-shadow">
-                                <Image src="/orbit/openai.png" alt="ChatGPT" width={42} height={42} className="object-contain" />
+                                <Image src="/Orbit/openai.png" alt="ChatGPT" width={42} height={42} className="object-contain" />
                           </div>
                         </div>
                             
                             <div className="absolute top-[50%] left-0 transform -translate-y-1/2">
                               <div className="w-16 h-16 bg-white rounded-full shadow-lg flex items-center justify-center border border-gray-200 hover:shadow-xl transition-shadow">
-                                <Image src="/orbit/claude.png" alt="Claude" width={40} height={40} className="object-contain" />
+                                <Image src="/Orbit/claude.png" alt="Claude" width={40} height={40} className="object-contain" />
                       </div>
                     </div>
                             
                             {/* Diagonal positions - Same size now */}
                             <div className="absolute top-6 right-6">
                               <div className="w-16 h-16 bg-white rounded-full shadow-lg flex items-center justify-center border border-gray-200 hover:shadow-xl transition-shadow">
-                                <Image src="/orbit/Gemini.png" alt="Gemini" width={42} height={42} className="object-contain" />
+                                <Image src="/Orbit/Gemini.png" alt="Gemini" width={42} height={42} className="object-contain" />
                   </div>
                   </div>
                   
                             <div className="absolute bottom-6 left-6">
                               <div className="w-16 h-16 bg-white rounded-full shadow-lg flex items-center justify-center border border-gray-200 hover:shadow-xl transition-shadow">
-                                <Image src="/orbit/perplexity.png" alt="Perplexity" width={48} height={48} className="object-contain" />
+                                <Image src="/Orbit/perplexity.png" alt="Perplexity" width={48} height={48} className="object-contain" />
                               </div>
                             </div>
                             
@@ -846,7 +846,7 @@ export default function Hero() {
                      <div className="p-6">
                        {/* Search bar */}
                        <div className="flex items-center gap-3 mb-6">
-                         <Image src="/orbit/Google.png" alt="Google" width={24} height={24} />
+                         <Image src="/Orbit/Google.png" alt="Google" width={24} height={24} />
                          <div className="flex-1 border rounded-full px-4 py-2 text-sm text-gray-400">
                            best marketing agencies
                   </div>
@@ -972,26 +972,26 @@ export default function Hero() {
         </div>
       </section>
 
-      {/* Stats Section - Similar to Mailchimp */}
-      <section className="relative w-full text-white h-[568px]" style={{backgroundColor: '#1d40b0'}}>
-        <div className="max-w-6xl mx-auto px-4 h-full">
-          <div className="grid lg:grid-cols-2 gap-16 items-center h-full">
+      {/* Stats Section - Mobile Responsive */}
+      <section className="relative w-full text-white py-16 md:py-24" style={{backgroundColor: '#1d40b0'}}>
+        <div className="max-w-6xl mx-auto px-4">
+          <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center">
             {/* Left Side - Main Content */}
-            <div className="flex flex-col justify-center">
-              <h2 className={`${inter.className} text-4xl md:text-5xl font-light mb-8 leading-tight`}>
+            <div className="flex flex-col justify-center text-center lg:text-left mb-8 lg:mb-0">
+              <h2 className={`${inter.className} text-3xl md:text-4xl lg:text-5xl font-light mb-6 leading-tight`}>
                 Find out why we're<br />
                 <span className="font-medium">best-in-class</span>
               </h2>
-              <p className={`${inter.className} text-lg md:text-xl leading-relaxed opacity-90 font-light max-w-lg`}>
+              <p className={`${inter.className} text-base md:text-lg lg:text-xl leading-relaxed opacity-90 font-light max-w-lg mx-auto lg:mx-0`}>
                 The #1 GEO and SEO agency that gets you visibility, traffic, and sales, in both AI and search engines alike.
               </p>
             </div>
 
             {/* Right Side - Stats Grid */}
-            <div className="flex flex-wrap justify-center">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
               {/* Stat 1 */}
-              <div className="w-1/2 text-center lg:text-left flex flex-col justify-center" style={{marginBottom: '1rem', paddingRight: '1rem'}}>
-                <div className={`${inter.className} text-3xl md:text-4xl font-bold mb-2`}>
+              <div className="text-center lg:text-left">
+                <div className={`${inter.className} text-2xl md:text-3xl lg:text-4xl font-bold mb-2`}>
                   15x Growth in Impressions
                 </div>
                 <div className={`${inter.className} text-sm opacity-80 font-light`}>
@@ -1000,8 +1000,8 @@ export default function Hero() {
               </div>
 
               {/* Stat 2 */}
-              <div className="w-1/2 text-center lg:text-left flex flex-col justify-center" style={{marginBottom: '1rem', paddingLeft: '1rem'}}>
-                <div className={`${inter.className} text-3xl md:text-4xl font-bold mb-2`}>
+              <div className="text-center lg:text-left">
+                <div className={`${inter.className} text-2xl md:text-3xl lg:text-4xl font-bold mb-2`}>
                   5x Increase in Clicks
                 </div>
                 <div className={`${inter.className} text-sm opacity-80 font-light`}>
@@ -1010,8 +1010,8 @@ export default function Hero() {
               </div>
 
               {/* Stat 3 */}
-              <div className="w-1/2 text-center lg:text-left flex flex-col justify-center" style={{marginTop: '1rem', paddingRight: '1rem'}}>
-                <div className={`${inter.className} text-3xl md:text-4xl font-bold mb-2`}>
+              <div className="text-center lg:text-left">
+                <div className={`${inter.className} text-2xl md:text-3xl lg:text-4xl font-bold mb-2`}>
                   Page 1 Rankings
                 </div>
                 <div className={`${inter.className} text-sm opacity-80 font-light`}>
@@ -1020,8 +1020,8 @@ export default function Hero() {
               </div>
 
               {/* Stat 4 */}
-              <div className="w-1/2 text-center lg:text-left flex flex-col justify-center" style={{marginTop: '1rem', paddingLeft: '1rem'}}>
-                <div className={`${inter.className} text-3xl md:text-4xl font-bold mb-2`}>
+              <div className="text-center lg:text-left">
+                <div className={`${inter.className} text-2xl md:text-3xl lg:text-4xl font-bold mb-2`}>
                   Over 1000 AI Citations
                 </div>
                 <div className={`${inter.className} text-sm opacity-80 font-light`}>
