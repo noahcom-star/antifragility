@@ -3,20 +3,47 @@
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import Image from 'next/image';
+import { Inter } from 'next/font/google';
+import { useEffect, useState } from 'react';
+
+const inter = Inter({ subsets: ['latin'] });
 
 const navItems = [
-  { name: 'Why Us?', href: '#why-antifragility' },
-  { name: 'FAQs', href: '#faqs' },
   { 
     name: 'Contact Us', 
-    href: 'https://calendly.com/noahbarbaros/30min',
+    href: 'https://calendly.com/noah-barbaros/introductory-chat',
     isExternal: true 
   },
 ];
 
 export default function Navigation() {
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const offset = window.scrollY;
+      setScrolled(offset > 50);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-200 shadow-sm">
+    <nav 
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+        scrolled 
+          ? 'bg-white/5 backdrop-blur-3xl border-b border-white/10 shadow-lg' 
+          : 'bg-white/2 backdrop-blur-xl border-b border-gray-200/30 shadow-sm'
+      }`}
+      style={{
+        backdropFilter: scrolled 
+          ? 'blur(20px) saturate(180%)' 
+          : 'blur(10px) saturate(150%)',
+        WebkitBackdropFilter: scrolled 
+          ? 'blur(20px) saturate(180%)' 
+          : 'blur(10px) saturate(150%)'
+      }}>
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           <Link href="/" className="flex items-center h-16">
@@ -29,23 +56,33 @@ export default function Navigation() {
             />
           </Link>
           
-          <div className="hidden md:flex items-center space-x-8">
+          <div className="hidden md:flex items-center">
             {navItems.map((item) => (
               item.isExternal ? (
-                <a
+                <button
                   key={item.name}
-                  href={item.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-gray-700 font-medium hover:text-blue-600 transition-colors"
+                  onClick={() => {
+                                    try {
+                  if (typeof window !== 'undefined' && window.Calendly) {
+                    window.Calendly.initPopupWidget({url: item.href});
+                  } else {
+                    window.open(item.href, '_blank');
+                  }
+                } catch (error) {
+                  window.open(item.href, '_blank');
+                }
+                  }}
+                  className={`${inter.className} text-white px-6 py-2 rounded-full font-medium transition-all hover:opacity-90`}
+                  style={{backgroundColor: '#1d40b0'}}
                 >
                   {item.name}
-                </a>
+                </button>
               ) : (
                 <Link
                   key={item.name}
                   href={item.href}
-                  className="text-gray-700 font-medium hover:text-blue-600 transition-colors"
+                  className={`${inter.className} text-white px-6 py-2 rounded-full font-medium transition-all hover:opacity-90`}
+                  style={{backgroundColor: '#1d40b0'}}
                 >
                   {item.name}
                 </Link>

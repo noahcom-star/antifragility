@@ -1,6 +1,6 @@
 'use client';
 
-import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useEffect, useState, useCallback, useRef } from 'react';
 import { Inter } from 'next/font/google';
 import Navigation from './Navigation';
@@ -9,10 +9,71 @@ import FAQAccordion from './FAQAccordion';
 
 const inter = Inter({ subsets: ['latin'] });
 
+// Logo Carousel Component
+const LogoCarousel = () => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  
+  const logos = [
+    { src: '/footerlogos/openai.png', alt: 'OpenAI' },
+    { src: '/footerlogos/google.png', alt: 'Google' },
+    { src: '/footerlogos/gemini.png', alt: 'Gemini' },
+    { src: '/footerlogos/perplexity.png', alt: 'Perplexity' },
+    { src: '/footerlogos/claude.png', alt: 'Claude' },
+    { src: '/footerlogos/bing.png', alt: 'Bing' }
+  ];
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % logos.length);
+    }, 2000); // 2 seconds per logo
+
+    return () => clearInterval(interval);
+  }, [logos.length]);
+
+  // Determine animation direction based on logo
+  const getAnimationProps = (index: number) => {
+    const isOpenAI = logos[index].alt === 'OpenAI';
+    return {
+      initial: { 
+        opacity: 0, 
+        y: isOpenAI ? -40 : 40 // OpenAI comes from top, others from bottom
+      },
+      animate: { 
+        opacity: 1, 
+        y: 0 
+      },
+      exit: { 
+        opacity: 0, 
+        y: isOpenAI ? 40 : -40 // OpenAI exits to bottom, others to top
+      }
+    };
+  };
+
+  return (
+    <div className="relative w-full h-full">
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={currentIndex}
+          {...getAnimationProps(currentIndex)}
+          transition={{ duration: 0.8, ease: "easeInOut" }}
+          className="w-full h-full flex items-center justify-center"
+        >
+          <img 
+            src={logos[currentIndex].src} 
+            alt={logos[currentIndex].alt} 
+            className="object-contain filter brightness-0 w-[300px] h-[300px]"
+            style={{ transform: 'skewX(-10deg)' }}
+          />
+        </motion.div>
+      </AnimatePresence>
+    </div>
+  );
+};
+
 const searchQueries = [
-  "How do I rank on LLMs like Gemini and ChatGPT?",
-  "What's the modern SEO strategy for 2025?",
-  "How do I get found by generative engines?"
+  "How do I get cited by LLMs like Gemini and ChatGPT?",
+  "How do I rank in Google's AI Overviews & AI Mode?",
+  "How can I show up in AI answers?"
 ];
 
 const TYPING_SPEED = 75;
@@ -21,12 +82,12 @@ const PAUSE_DURATION = 3000;
 const PAUSE_BEFORE_DELETE = 2000;
 
 const logos = [
-  { src: '/logos/openai.png', alt: 'OpenAI', className: 'h-[35px]' },
-  { src: '/logos/google.png', alt: 'Google', className: 'h-[30px]' },
-  { src: '/logos/bing.png', alt: 'Bing', className: 'h-[65px]' },
-  { src: '/logos/claude.png', alt: 'Claude', className: 'h-[35px]' },
-  { src: '/logos/gemini.png', alt: 'Gemini', className: 'h-[55px]' },
-  { src: '/logos/meta.png', alt: 'Meta', className: 'h-[60px]' },
+  { src: '/logos/openai.png', alt: 'OpenAI', className: 'h-[350px]' },
+  { src: '/logos/google.png', alt: 'Google', className: 'h-[300px] ml-2' },
+  { src: '/logos/bing.png', alt: 'Bing', className: 'h-[900px]' },
+  { src: '/logos/claude.png', alt: 'Claude', className: 'h-[700px]' },
+  { src: '/logos/gemini.png', alt: 'Gemini', className: 'h-[800px] -mt-3' },
+  { src: '/logos/perplexity.png', alt: 'Perplexity', className: 'h-[1000px]' },
 ];
 
 export default function Hero() {
@@ -44,15 +105,11 @@ export default function Hero() {
   const nextSectionRef = useRef<HTMLDivElement>(null);
   const typingTimeoutRef = useRef<NodeJS.Timeout>();
   
-  const { scrollY } = useScroll();
-  const searchBarOpacity = useTransform(scrollY, [0, 200], [0, 1]);
-  const searchBarScale = useTransform(scrollY, [0, 200], [0.8, 1]);
-  const contentOpacity = useTransform(scrollY, [0, 200, 400], [1, 0, 0]);
-  const rankingOpacity = useTransform(scrollY, [0, 100, 300], [1, 0.5, 0]);
-  const rankingY = useTransform(scrollY, [0, 300], [0, 50]);
+
 
   const [current, setCurrent] = useState(0);
   const [direction, setDirection] = useState(0);
+  const [currentService, setCurrentService] = useState(0);
 
   const stats = [
     {
@@ -73,7 +130,7 @@ export default function Hero() {
         url: 'https://www.tomsguide.com/ai/new-study-reveals-people-are-ditching-google-for-the-likes-of-chatgpt-search-heres-why',
         label: 'View Research',
       },
-      bg: 'bg-gradient-to-br from-purple-900 via-purple-800 to-black',
+      bg: 'bg-gradient-to-br from-blue-900 via-blue-800 to-black',
     },
     {
       image: '/banners/ai-overviews.png',
@@ -83,9 +140,62 @@ export default function Hero() {
         url: 'https://seo.ai/blog/search-generative-experience-sge-statistics',
         label: 'View Research',
       },
-      bg: 'bg-gradient-to-br from-blue-800 via-purple-800 to-black',
+      bg: 'bg-gradient-to-br from-blue-800 via-blue-900 to-black',
     },
   ];
+
+  const services = [
+    {
+      title: "Your All-in-One Solution for Search",
+      description: "Antifragility Labs is a full-service agency that ranks you in both search engines and AI results for the cost of one. Traditional SEO isn’t enough anymore—the future of search is AI. That’s why you need GEO, our area of expertise.",
+      features: [],
+      icon: '<svg class="w-10 h-10 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>',
+      iconBg: "bg-blue-50",
+      numberBg: "bg-blue-100",
+      numberText: "text-blue-700",
+      featureBg: "bg-blue-50",
+      featureText: "text-blue-700",
+      imagePlaceholder: "SEO vs GEO Comparison",
+      imageDescription: "Side-by-side comparison of traditional Google search and AI-powered results",
+      // imageSrc: "/screenshots/seo-geo-comparison.png" // Add this when you have the image
+    },
+    {
+      title: "Weekly Updates",
+      description: "Your trust is our highest priority, that's why we provide regular optimization cycles with performance reports and continuous improvements across all search platforms.",
+      features: [],
+      icon: '<svg class="w-10 h-10 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>',
+      iconBg: "bg-green-50",
+      numberBg: "bg-green-100",
+      numberText: "text-green-700",
+      featureBg: "bg-green-50",
+      featureText: "text-green-700",
+      imagePlaceholder: "Weekly Update Email",
+      imageDescription: "Screenshot of detailed performance and ranking report",
+      // imageSrc: "/screenshots/weekly-update.png" // Add this when you have the image
+    },
+    {
+      title: "Prompt Handoff",
+      description: "We wish you continued success. Once our work is done we provide you with a complete transition that contains optimized prompts and strategies for your team to scale across all search platforms.",
+              features: [],
+      icon: '<svg class="w-10 h-10 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>',
+      iconBg: "bg-orange-50",
+      numberBg: "bg-orange-100",
+      numberText: "text-orange-700",
+      featureBg: "bg-orange-50",
+      featureText: "text-orange-700",
+      imagePlaceholder: "Handoff Documentation",
+      imageDescription: "Screenshot of comprehensive strategy handoff materials",
+      // imageSrc: "/screenshots/handoff-docs.png" // Add this when you have the image
+    }
+  ];
+
+  const handleNextService = () => {
+    setCurrentService((prev) => (prev + 1) % services.length);
+  };
+
+  const handlePrevService = () => {
+    setCurrentService((prev) => (prev - 1 + services.length) % services.length);
+  };
 
   const typeText = useCallback(async (text: string) => {
     if (!isTyping) return;
@@ -147,6 +257,25 @@ export default function Hero() {
     };
   }, [currentIndex, typeText]);
 
+  // Auto-play services carousel
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentService((prev) => (prev + 1) % services.length);
+    }, 12000); // Change service every 12 seconds (slower pace for better readability)
+
+    return () => clearInterval(interval);
+  }, [services.length]);
+
+  // Auto-play stats carousel with longer delay
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setDirection(1);
+      setCurrent((prev) => (prev + 1) % stats.length);
+    }, 15000); // Change stats every 15 seconds (longer for better reading)
+
+    return () => clearInterval(interval);
+  }, [stats.length]);
+
   return (
     <>
       <div className="relative min-h-screen bg-gradient-to-b from-white to-gray-50 overflow-hidden" ref={containerRef}>
@@ -157,27 +286,22 @@ export default function Hero() {
           <div className="absolute w-full h-full bg-[url('/grid.svg')] bg-center [mask-image:linear-gradient(180deg,black,rgba(0,0,0,0))]" />
         </div>
 
-        <motion.div 
-          style={{ opacity: contentOpacity }}
-          className="container mx-auto px-4 pt-20 pb-4 relative z-10 min-h-screen flex flex-col"
-        >
+        <div className="container mx-auto px-4 pt-24 pb-4 relative z-10 min-h-screen flex flex-col">
           <div className="flex-1 flex flex-col items-center text-center max-w-6xl mx-auto justify-center">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
             >
-              <h1 className={`${inter.className} text-5xl md:text-7xl font-bold text-gray-900 mb-3`}>
-                Built to grow your traffic.<br />
-                <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent block leading-[1.2]">
+              <h1 className={`${inter.className} text-5xl md:text-7xl text-gray-900 mb-2`}>
+                <span className="font-light">Built to grow your traffic.</span><br />
+                <span className="text-blue-800 font-medium block leading-[1.2]">
                   On AI & search engines alike
                 </span>
               </h1>
 
-              <p className="text-gray-600 text-lg md:text-xl mb-6 max-w-4xl mx-auto">
-                We blend Generative Engine Optimization (GEO)
-                <br />
-                and <span className="whitespace-nowrap">Search Engine Optimization (SEO).</span> to build growth systems that scale with you — and the AI era.
+              <p className="text-gray-500 text-lg md:text-xl mb-8 max-w-4xl mx-auto font-light">
+                We blend Generative Engine Optimization and Search Engine Optimization to build growth systems that scale with you — and the AI era.
               </p>
             </motion.div>
 
@@ -186,22 +310,20 @@ export default function Hero() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
-              className="w-full max-w-4xl mx-auto mb-6"
+              className="w-full max-w-4xl mx-auto mb-4"
             >
               <div className="relative rounded-2xl overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-r from-blue-200 to-purple-200" />
-                <div className="relative bg-white/80 backdrop-blur-sm p-5 border border-blue-100 shadow-lg">
+                <div className="absolute inset-0 bg-blue-100" />
+                <div className="relative bg-white/80 backdrop-blur-sm p-5 border border-blue-200 shadow-lg">
                   <div className="flex items-center">
                     <div className="flex-1">
-                      <div className="text-gray-800 text-lg md:text-xl min-h-[32px] font-mono">
+                      <div className="text-gray-800 text-lg md:text-xl min-h-[32px] font-mono text-center">
                         {currentQuery}
                         <span className={`inline-block w-[2px] h-5 ml-0.5 bg-gray-800 ${isPaused ? 'opacity-0' : 'animate-blink'}`}></span>
                       </div>
                     </div>
                   </div>
-                  <p className="text-gray-500 text-sm mt-2 text-center">
-                    From intent to impact — on autopilot.
-                  </p>
+
                 </div>
               </div>
             </motion.div>
@@ -211,11 +333,22 @@ export default function Hero() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.3 }}
-              className="flex flex-col sm:flex-row gap-4 justify-center mb-8"
+              className="flex flex-col sm:flex-row gap-4 justify-center mb-16"
             >
               <button
-                className="px-8 py-3 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg text-white font-semibold hover:opacity-90 transition-opacity shadow-lg text-lg"
-                onClick={() => setShowBooking(true)}
+                className="px-8 py-3 rounded-lg text-white font-semibold transition-colors shadow-lg text-lg hover:opacity-90"
+                style={{backgroundColor: '#1d40b0'}}
+                onClick={() => {
+                  try {
+                    if (typeof window !== 'undefined' && window.Calendly) {
+                      window.Calendly.initPopupWidget({url: 'https://calendly.com/noah-barbaros/introductory-chat'});
+                    } else {
+                      window.open('https://calendly.com/noah-barbaros/introductory-chat', '_blank');
+                    }
+                  } catch (error) {
+                    window.open('https://calendly.com/noah-barbaros/introductory-chat', '_blank');
+                  }
+                }}
               >
                 Let's Talk
               </button>
@@ -235,7 +368,7 @@ export default function Hero() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 1, delay: 1.1 }}
-              className="text-gray-600 text-lg mb-6"
+              className="text-gray-600 text-lg mb-8"
             >
               We help rank on:
             </motion.div>
@@ -245,9 +378,9 @@ export default function Hero() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 1, delay: 1.2 }}
-              className="w-full max-w-5xl mx-auto mb-2"
+              className="w-full max-w-5xl mx-auto mb-10"
             >
-              <div className="grid grid-cols-6 items-center justify-items-center gap-x-10">
+              <div className="grid grid-cols-6 items-center justify-items-center gap-x-24">
                 {logos.map((logo, index) => (
                   <motion.div
                     key={logo.alt}
@@ -261,13 +394,18 @@ export default function Hero() {
                     }}
                     className="flex items-center justify-center w-full"
                   >
-                    <Image
+                    <img
                       src={logo.src}
                       alt={logo.alt}
-                      width={200}
-                      height={200}
-                      className={`object-contain w-auto ${logo.className} filter brightness-0 opacity-50 hover:opacity-100 transition-opacity`}
-                      style={{ maxWidth: '100%' }}
+                      className={`object-contain filter brightness-0 opacity-50 hover:opacity-100 transition-opacity ${logo.className}`}
+                      style={{ 
+                        height: '80px',
+                        width: '120px',
+                        display: 'block',
+                        transform: logo.alt === 'Claude' || logo.alt === 'Perplexity' ? 'scale(2.2)' : logo.alt === 'Bing' ? 'scale(2.2)' : 'scale(1.8)',
+                        transformOrigin: 'center center',
+                        objectFit: 'contain'
+                      }}
                     />
                   </motion.div>
                 ))}
@@ -279,12 +417,12 @@ export default function Hero() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.8, delay: 0.6 }}
-              className="mt-2"
+              className="-mt-4"
             >
-              <div className="animate-bounce text-gray-400 text-2xl">↓</div>
+              <div className="animate-bounce text-2xl text-gray-600">↓</div>
             </motion.div>
           </div>
-        </motion.div>
+        </div>
 
         {/* Search Transition */}
         <AnimatePresence>
@@ -296,8 +434,8 @@ export default function Hero() {
               className="fixed top-1/2 left-[30%] -translate-x-1/2 -translate-y-1/2 w-[600px] z-50"
             >
               <div className="relative">
-                <div className="absolute inset-0 bg-gradient-to-r from-blue-200 to-purple-200 blur-xl rounded-2xl" />
-                <div className="relative bg-white/90 backdrop-blur-sm rounded-2xl p-6 border border-blue-100 shadow-lg">
+                <div className="absolute inset-0 bg-blue-100 blur-xl rounded-2xl" />
+                <div className="relative bg-white/90 backdrop-blur-sm rounded-2xl p-6 border border-blue-200 shadow-lg">
                   <div className="flex items-center">
                     <div className="flex-1 flex items-center gap-3">
                       <div className="w-5 h-5 relative">
@@ -316,7 +454,7 @@ export default function Hero() {
                     </div>
                   </div>
                   <div className="h-1 w-full bg-gray-100 rounded-full mt-4 overflow-hidden">
-                    <div className="h-full bg-gradient-to-r from-blue-600 to-purple-600 w-full animate-search-progress" />
+                                            <div className="h-full bg-blue-800 w-full animate-search-progress" />
                   </div>
                 </div>
               </div>
@@ -325,99 +463,341 @@ export default function Hero() {
         </AnimatePresence>
       </div>
 
-      {/* Antifragility Value Timeline Section (Horizontal Scroll) */}
-      <section id="geo-seo-section" className="relative w-full py-20 md:py-28 mt-20 md:mt-32 mb-8 md:mb-12">
-        <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4 text-center">
-          Antifragility Labs: GEO + SEO for the AI Era
-        </h2>
-        <p className="text-gray-500 mb-2 text-lg md:text-xl text-center max-w-full whitespace-normal break-words px-2 sm:px-0 mx-auto">
-          We don't just optimize for Google—we optimize for every search platform, human and AI. Our<br />
-          <span className="whitespace-normal break-words">
-            unique approach blends Generative Engine Optimization (GEO) and Search Engine Optimization (SEO).
-          </span>
-          <br className="hidden md:block" />
-          <span className="font-semibold text-blue-600 whitespace-normal break-words block mt-4 mb-8 text-center">
-            Double your discovery. Future-proof your brand.
-          </span>
-        </p>
-        <div className="w-full">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-16 px-6 md:px-16 justify-center">
-            {/* GEO + SEO, Unified */}
-            <div className="relative w-full h-[380px] md:h-[420px] rounded-3xl overflow-hidden border border-blue-100 bg-gradient-to-br from-blue-50 via-blue-100 to-purple-50 flex flex-col justify-end">
-              {/* Illustration: Google + AI Result, visually unified */}
-              <svg className="absolute inset-0 w-full h-full object-cover" viewBox="0 0 420 420" fill="none" xmlns="http://www.w3.org/2000/svg">
-                {/* Google Result */}
-                <rect x="36" y="60" width="150" height="70" rx="10" fill="#fff" fillOpacity="0.97" />
-                <rect x="50" y="80" width="90" height="14" rx="7" fill="#3b82f6" />
-                <rect x="50" y="100" width="60" height="10" rx="5" fill="#22c55e" />
-                <rect x="50" y="115" width="110" height="8" rx="4" fill="#a3a3a3" fillOpacity="0.3" />
-                <rect x="50" y="127" width="80" height="8" rx="4" fill="#a3a3a3" fillOpacity="0.2" />
-                {/* Divider */}
-                <rect x="200" y="70" width="2" height="60" rx="1" fill="#a78bfa" fillOpacity="0.18" />
-                {/* AI/LLM Result */}
-                <rect x="234" y="60" width="150" height="70" rx="10" fill="#fff" fillOpacity="0.97" />
-                <rect x="250" y="80" width="60" height="14" rx="7" fill="#a78bfa" />
-                <rect x="315" y="80" width="30" height="14" rx="7" fill="#6366f1" fillOpacity="0.18" />
-                <rect x="250" y="100" width="110" height="10" rx="5" fill="#6366f1" fillOpacity="0.12" />
-                <rect x="250" y="115" width="80" height="8" rx="4" fill="#a3a3a3" fillOpacity="0.2" />
-                {/* AI badge */}
-                <rect x="355" y="65" width="28" height="18" rx="6" fill="#a78bfa" fillOpacity="0.18" />
-                <text x="369" y="78" textAnchor="middle" fontSize="10" fill="#7c3aed" fontWeight="bold">AI</text>
-                {/* Unified background */}
-                <rect x="36" y="160" width="348" height="180" rx="18" fill="#e0e7ff" fillOpacity="0.22" />
-              </svg>
-              <div className="relative z-10 p-8 pt-32 flex flex-col items-center justify-end bg-gradient-to-t from-white/90 via-white/70 to-transparent">
-                <span className="text-xs font-bold uppercase tracking-widest bg-blue-100 text-blue-700 px-3 py-1 rounded-full mb-3">Unified Approach</span>
-                <h3 className="text-2xl font-semibold text-gray-900 mb-4">GEO + SEO, Unified</h3>
-                <p className="text-gray-600 text-base">We optimize for both LLMs and search engines, so you're found by humans and AI alike—on Google, ChatGPT, Gemini, and beyond.</p>
-              </div>
-            </div>
-            {/* AI-First Content & Trust */}
-            <div className="relative w-full h-[380px] md:h-[420px] rounded-3xl overflow-hidden border border-purple-100 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 flex flex-col justify-end">
-              {/* Improved Illustration: AI answer box with citation and trust badge */}
-              <svg className="absolute inset-0 w-full h-full object-cover" viewBox="0 0 420 420" fill="none" xmlns="http://www.w3.org/2000/svg">
-                {/* Glow/gradient behind answer box */}
-                <ellipse cx="210" cy="120" rx="120" ry="48" fill="#a78bfa" fillOpacity="0.12" />
-                {/* Main AI answer box */}
-                <rect x="70" y="70" width="280" height="80" rx="18" fill="#fff" fillOpacity="0.98" />
-                {/* AI badge */}
-                <rect x="90" y="85" width="38" height="20" rx="8" fill="#a78bfa" fillOpacity="0.18" />
-                <text x="109" y="100" textAnchor="middle" fontSize="12" fill="#7c3aed" fontWeight="bold">AI</text>
-                {/* Answer lines */}
-                <rect x="140" y="90" width="140" height="14" rx="7" fill="#a78bfa" fillOpacity="0.18" />
-                <rect x="140" y="110" width="110" height="10" rx="5" fill="#6366f1" fillOpacity="0.12" />
-                {/* Citation badge */}
-                <circle cx="320" cy="100" r="13" fill="#3b82f6" fillOpacity="0.18" />
-                <text x="320" y="105" textAnchor="middle" fontSize="12" fill="#6366f1" fontWeight="bold">1</text>
-                {/* Trust badge (shield with checkmark) */}
-                <g>
-                  <path d="M370 90 l10 8 v10 a12 12 0 0 1 -10 10 a12 12 0 0 1 -10 -10 v-10 z" fill="#a78bfa" fillOpacity="0.18" />
-                  <path d="M370 104 l4 4 l-8-8" stroke="#6366f1" strokeWidth="2" fill="none" />
-                </g>
-                {/* Subtle background card for context */}
-                <rect x="60" y="180" width="300" height="160" rx="18" fill="#ede9fe" fillOpacity="0.25" />
-              </svg>
-              <div className="relative z-10 p-8 pt-32 flex flex-col items-center justify-end bg-gradient-to-t from-white/90 via-white/70 to-transparent">
-                <span className="text-xs font-bold uppercase tracking-widest bg-purple-100 text-purple-700 px-3 py-1 rounded-full mb-3">AI-First</span>
-                <h3 className="text-2xl font-semibold text-gray-900 mb-4">AI-First Content & Trust</h3>
-                <p className="text-gray-600 text-base">We structure and enhance your content for AI comprehension, citation, and trust—so you're recommended by the next generation of search.</p>
-              </div>
-            </div>
-            {/* Compounding Growth */}
-            <div className="relative w-full h-[380px] md:h-[420px] rounded-3xl overflow-hidden border border-pink-100 bg-gradient-to-br from-pink-50 via-purple-50 to-blue-50 flex flex-col justify-end">
-              {/* Illustration: Growth Chart */}
-              <svg className="absolute inset-0 w-full h-full object-cover" viewBox="0 0 420 420" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <rect x="60" y="80" width="300" height="80" rx="16" fill="#fff" fillOpacity="0.95" />
-                <path d="M90 150L170 110L250 170L330 90" stroke="#a78bfa" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round" />
-                <circle cx="170" cy="110" r="8" fill="#6366f1" fillOpacity="0.18" />
-                <circle cx="250" cy="170" r="8" fill="#6366f1" fillOpacity="0.18" />
-                <circle cx="330" cy="90" r="8" fill="#3b82f6" fillOpacity="0.18" />
-                <rect x="60" y="180" width="300" height="160" rx="18" fill="#f3e8ff" fillOpacity="0.25" />
-              </svg>
-              <div className="relative z-10 p-8 pt-32 flex flex-col items-center justify-end bg-gradient-to-t from-white/90 via-white/70 to-transparent">
-                <span className="text-xs font-bold uppercase tracking-widest bg-pink-100 text-pink-700 px-3 py-1 rounded-full mb-3">Growth Engine</span>
-                <h3 className="text-2xl font-semibold text-gray-900 mb-4">Compounding Growth</h3>
-                <p className="text-gray-600 text-base">Our systems adapt and improve over time, compounding your results and keeping you ahead of every search trend—human or AI.</p>
+      {/* How We Work Section */}
+      <section id="geo-seo-section" className="relative w-full py-20 md:py-32 mt-20 md:mt-32 mb-8 md:mb-12">
+        <div className="relative z-10">
+          <div className="text-center mb-4">
+            <span className="text-sm font-light text-gray-500 uppercase tracking-widest">HERE'S WHAT WE DO</span>
+          </div>
+          <h2 className={`${inter.className} text-3xl md:text-4xl font-light text-gray-900 mb-4 text-center`}>
+            Get your business discoverable, everywhere.
+          </h2>
+          <p className="text-gray-400 mb-16 text-lg md:text-xl text-center max-w-3xl mx-auto font-light">
+          Your marketing solutions should work for you. We help drive more revenue through SEO and GEO.
+          </p>
+          
+          {/* Services Carousel */}
+          <div className="relative max-w-6xl mx-auto">
+            {/* Carousel Container */}
+            <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-gray-50 to-white border border-gray-200 shadow-xl">
+              
+                            {/* Service Cards */}
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={currentService}
+                  initial={{ opacity: 0, x: 100 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -100 }}
+                  transition={{ duration: 0.5, ease: "easeInOut" }}
+                  className="grid lg:grid-cols-2 gap-8 lg:gap-12 p-8 md:p-12 min-h-[500px] items-center"
+                >
+                  {/* Left Side - Visual Mockup */}
+                  <div className="order-2 lg:order-1">
+                    <div className="relative rounded-2xl bg-white border border-gray-200 shadow-lg overflow-hidden aspect-[4/3]">
+                      {/* Service-specific visual mockup */}
+                                            {currentService === 0 && (
+                        // Creative Logo Showcase - Scaled Up
+                        <div className="h-full bg-gradient-to-br from-blue-50 to-blue-100 p-4 flex flex-col justify-center items-center">
+                          {/* Central Hub Design - Much Larger */}
+                          <div className="relative w-80 h-80 flex items-center justify-center">
+                            {/* Center circle - Antifragility Labs Logo */}
+                            <div className="w-32 h-32 rounded-full shadow-xl flex items-center justify-center border-3 border-blue-200 z-10" style={{backgroundColor: '#1d40b0'}}>
+                              <img src="/orbit/antifragility.png" alt="Antifragility Labs" className="object-contain w-20 h-20" />
+                            </div>
+                            
+                            {/* Orbiting logos - Much larger and further apart */}
+                                                                                    <div className="absolute top-0 left-[50%] transform -translate-x-1/2">
+                              <div className="w-16 h-16 bg-white rounded-full shadow-lg flex items-center justify-center border border-gray-200 hover:shadow-xl transition-shadow">
+                                <img src="/orbit/Google.png" alt="Google" className="object-contain w-9 h-9" />
+                              </div>
+                            </div>
+                            
+                            <div className="absolute top-[50%] right-0 transform -translate-y-1/2">
+                              <div className="w-16 h-16 bg-white rounded-full shadow-lg flex items-center justify-center border border-gray-200 hover:shadow-xl transition-shadow">
+                                <Image src="/orbit/Bing.png" alt="Bing" width={52} height={52} className="object-contain" />
+                          </div>
+                          </div>
+                            
+                            <div className="absolute bottom-0 left-[50%] transform -translate-x-1/2">
+                              <div className="w-16 h-16 bg-white rounded-full shadow-lg flex items-center justify-center border border-gray-200 hover:shadow-xl transition-shadow">
+                                <Image src="/orbit/openai.png" alt="ChatGPT" width={42} height={42} className="object-contain" />
+                          </div>
+                        </div>
+                            
+                            <div className="absolute top-[50%] left-0 transform -translate-y-1/2">
+                              <div className="w-16 h-16 bg-white rounded-full shadow-lg flex items-center justify-center border border-gray-200 hover:shadow-xl transition-shadow">
+                                <Image src="/orbit/claude.png" alt="Claude" width={40} height={40} className="object-contain" />
+                      </div>
+                    </div>
+                            
+                            {/* Diagonal positions - Same size now */}
+                            <div className="absolute top-6 right-6">
+                              <div className="w-16 h-16 bg-white rounded-full shadow-lg flex items-center justify-center border border-gray-200 hover:shadow-xl transition-shadow">
+                                <Image src="/orbit/Gemini.png" alt="Gemini" width={42} height={42} className="object-contain" />
+                  </div>
+                  </div>
+                  
+                            <div className="absolute bottom-6 left-6">
+                              <div className="w-16 h-16 bg-white rounded-full shadow-lg flex items-center justify-center border border-gray-200 hover:shadow-xl transition-shadow">
+                                <Image src="/orbit/perplexity.png" alt="Perplexity" width={48} height={48} className="object-contain" />
+                              </div>
+                            </div>
+                            
+                            {/* Connection lines - Clean circles without dashes */}
+                            <div className="absolute inset-0 pointer-events-none">
+                              <svg className="w-full h-full" viewBox="0 0 320 320">
+                                <circle cx="160" cy="160" r="140" fill="none" stroke="#e5e7eb" strokeWidth="1" opacity="0.2"/>
+                                <circle cx="160" cy="160" r="100" fill="none" stroke="#e5e7eb" strokeWidth="1" opacity="0.15"/>
+                                <circle cx="160" cy="160" r="70" fill="none" stroke="#e5e7eb" strokeWidth="1" opacity="0.1"/>
+                              </svg>
+                            </div>
+                          </div>
+                          
+                          {/* Minimal text */}
+                          <div className="mt-4 text-center">
+                            <p className="text-sm text-gray-600 font-light">Complete optimization across all platforms</p>
+                      </div>
+                        </div>
+                      )}
+                      
+                                            {currentService === 1 && (
+                        // Gmail Screenshot Mockup
+                        <div className="h-full bg-gray-100">
+                          {/* Gmail Interface */}
+                          <div className="bg-white h-full">
+                            {/* Gmail Header */}
+                            <div className="bg-white border-b border-gray-200 p-3">
+                              <div className="flex items-center justify-between">
+                                <div className="flex items-center gap-3">
+                                  <svg className="w-5 h-5 text-red-500" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-.904.732-1.636 1.636-1.636h3.819l6.545 4.91 6.545-4.91h3.819c.904 0 1.636.732 1.636 1.636z"/>
+                                  </svg>
+                                  <span className="text-sm font-medium text-gray-900">Gmail</span>
+                      </div>
+                      </div>
+                    </div>
+                            
+                            {/* Email */}
+                            <div className="p-4">
+                              {/* Email Header */}
+                              <div className="mb-4">
+                                <div className="flex items-center justify-between mb-2">
+                                  <h2 className="text-lg font-semibold text-gray-900">Weekly SEO/GEO Performance Report</h2>
+                                  <span className="text-xs text-gray-500">Jan 15, 2024</span>
+                  </div>
+                                <div className="flex items-center gap-2 text-sm text-gray-600">
+                                  <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white text-xs font-semibold">
+                                    AF
+                                  </div>
+                                  <span>from: noah@antifragility.co</span>
+                </div>
+                </div>
+                
+                              {/* Email Content */}
+                              <div className="bg-gray-50 rounded-lg p-4 space-y-3">
+                                <div className="flex justify-between items-center">
+                                  <h3 className="font-semibold text-gray-900">Key Metrics This Week</h3>
+                                  <span className="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs font-medium">
+                                    ↗ 23% Growth
+                                  </span>
+                                </div>
+                                
+                                {/* Stats Grid */}
+                                <div className="grid grid-cols-2 gap-3">
+                                  <div className="bg-white p-3 rounded border">
+                                    <div className="text-xs text-gray-600 mb-1">Organic Traffic</div>
+                                    <div className="text-lg font-bold text-gray-900">12,847</div>
+                                    <div className="text-xs text-green-600">+1,234 vs last week</div>
+                                  </div>
+                                  <div className="bg-white p-3 rounded border">
+                                    <div className="text-xs text-gray-600 mb-1">AI Citations</div>
+                                    <div className="text-lg font-bold text-gray-900">47</div>
+                                    <div className="text-xs text-blue-600">+8 new mentions</div>
+                                  </div>
+                                  <div className="bg-white p-3 rounded border">
+                                    <div className="text-xs text-gray-600 mb-1">Google Rankings</div>
+                                    <div className="text-lg font-bold text-gray-900">Pos. 3.2</div>
+                                    <div className="text-xs text-green-600">+2.1 improvement</div>
+                                  </div>
+                                  <div className="bg-white p-3 rounded border">
+                                    <div className="text-xs text-gray-600 mb-1">ChatGPT Mentions</div>
+                                    <div className="text-lg font-bold text-gray-900">23</div>
+                                    <div className="text-xs text-purple-600">+5 this week</div>
+                                  </div>
+                </div>
+                
+                                <div className="text-xs text-gray-600 mt-3">
+                                  <p>Your content performed exceptionally well this week. The "Marketing Strategy Guide" article gained significant traction in AI citations...</p>
+                      </div>
+                      </div>
+                      </div>
+                          </div>
+                        </div>
+                      )}
+                      
+                                            {currentService === 2 && (
+                        // Notion Document Screenshot Mockup
+                        <div className="h-full bg-white">
+                          {/* Notion Header */}
+                          <div className="bg-white border-b border-gray-200 p-3">
+                            <div className="flex items-center gap-2">
+                              <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M4.5 3h15A1.5 1.5 0 0121 4.5v15a1.5 1.5 0 01-1.5 1.5h-15A1.5 1.5 0 013 19.5v-15A1.5 1.5 0 014.5 3z"/>
+                              </svg>
+                              <div>
+                                <div className="text-sm font-semibold text-gray-900">Antifragility SEO/GEO Strategy Handoff</div>
+                                <div className="text-xs text-gray-500">Complete implementation guide</div>
+                    </div>
+                    </div>
+                  </div>
+                  
+                          {/* Document Content */}
+                          <div className="p-4 space-y-4">
+                            {/* Title */}
+                            <h1 className="text-lg font-bold text-gray-900">🚀 SEO/GEO Implementation Guide</h1>
+                            
+                            {/* Table of Contents */}
+                            <div className="bg-gray-50 rounded-lg p-3">
+                              <h3 className="text-sm font-semibold text-gray-900 mb-2">📋 Table of Contents</h3>
+                              <div className="space-y-1.5 text-xs">
+                                <div className="flex items-center gap-2">
+                                  <span className="text-orange-600">1.</span>
+                                  <span className="text-gray-700">Keyword Strategy & Target Terms</span>
+                                </div>
+                                <div className="flex items-center gap-2">
+                                  <span className="text-orange-600">2.</span>
+                                  <span className="text-gray-700">AI Citation Optimization Framework</span>
+                                </div>
+                                <div className="flex items-center gap-2">
+                                  <span className="text-orange-600">3.</span>
+                                  <span className="text-gray-700">Content Templates & Prompts</span>
+                                </div>
+                                <div className="flex items-center gap-2">
+                                  <span className="text-orange-600">4.</span>
+                                  <span className="text-gray-700">Monitoring & KPI Dashboard</span>
+                                </div>
+                              </div>
+                            </div>
+                            
+                            {/* Sample Content */}
+                            <div className="space-y-3">
+                              <div className="bg-blue-50 border-l-4 border-blue-400 p-3">
+                                <h4 className="text-sm font-semibold text-blue-900 mb-1">💡 Key Insight</h4>
+                                <p className="text-xs text-blue-800">Optimize for both traditional search engines and AI models by structuring content with clear headings and citations.</p>
+                      </div>
+                  
+                              <div className="bg-white border border-gray-200 rounded p-3">
+                                <h4 className="text-sm font-semibold text-gray-900 mb-2">📊 Performance Targets</h4>
+                                <div className="grid grid-cols-2 gap-2 text-xs">
+                                  <div>
+                                    <span className="text-gray-600">AI Citations:</span>
+                                    <span className="font-semibold text-green-600 ml-1">40+ per month</span>
+                      </div>
+                                  <div>
+                                    <span className="text-gray-600">Organic Traffic:</span>
+                                    <span className="font-semibold text-green-600 ml-1">+25% growth</span>
+                      </div>
+                                  <div>
+                                    <span className="text-gray-600">Google Rankings:</span>
+                                    <span className="font-semibold text-green-600 ml-1">Top 3 positions</span>
+                    </div>
+                                  <div>
+                                    <span className="text-gray-600">LLM Mentions:</span>
+                                    <span className="font-semibold text-green-600 ml-1">15+ weekly</span>
+                  </div>
+                </div>
+                </div>
+                
+                              <div className="bg-gray-900 rounded p-3">
+                                <div className="text-green-400 text-xs mb-1 font-mono">Content Optimization Checklist:</div>
+                                <div className="text-gray-300 text-xs space-y-0.5 font-mono">
+                                  <div>☑ Clear H1/H2 structure</div>
+                                  <div>☑ Authority citations included</div>
+                                  <div>☑ FAQ section added</div>
+                                  <div>☑ Schema markup implemented</div>
+                </div>
+                      </div>
+                      </div>
+                      </div>
+                    </div>
+                      )}
+                    </div>
+                  </div>
+                  
+                  {/* Right Side - Content */}
+                  <div className="order-1 lg:order-2 text-center lg:text-left">
+                    {/* Service Number */}
+                    <div className={`inline-flex items-center justify-center w-10 h-10 rounded-full text-sm font-bold mb-4 ${services[currentService].numberBg} ${services[currentService].numberText}`}>
+                      {String(currentService + 1).padStart(2, '0')}
+                      </div>
+                  
+                    {/* Service Title */}
+                    <h3 className={`${inter.className} text-3xl md:text-4xl font-light text-gray-900 mb-4 leading-tight`}>
+                      {services[currentService].title}
+                    </h3>
+                    
+                    {/* Service Description */}
+                    <p className="text-lg text-gray-600 leading-relaxed mb-6">
+                      {services[currentService].description}
+                    </p>
+                    
+                    {/* Service Features */}
+                    <div className="flex flex-wrap justify-center lg:justify-start gap-2">
+                      {services[currentService].features.map((feature, index) => (
+                        <span 
+                          key={index}
+                          className={`px-3 py-1.5 rounded-lg text-sm font-medium ${services[currentService].featureBg} ${services[currentService].featureText}`}
+                        >
+                          {feature}
+                        </span>
+                      ))}
+                      </div>
+                      </div>
+                </motion.div>
+              </AnimatePresence>
+              
+              {/* Navigation Arrows */}
+              <button
+                onClick={handlePrevService}
+                className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/90 hover:bg-white rounded-full shadow-lg flex items-center justify-center transition-all duration-200 hover:scale-110 z-10"
+              >
+                <svg className="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                </svg>
+              </button>
+              
+              <button
+                onClick={handleNextService}
+                className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/90 hover:bg-white rounded-full shadow-lg flex items-center justify-center transition-all duration-200 hover:scale-110 z-10"
+              >
+                <svg className="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </button>
+                    </div>
+                  
+            {/* Navigation Dots */}
+            <div className="flex justify-center mt-8 space-x-2">
+              {services.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => setCurrentService(index)}
+                  className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                    index === currentService 
+                      ? 'bg-blue-600 w-8' 
+                      : 'bg-gray-300 hover:bg-gray-400'
+                  }`}
+                />
+              ))}
+                </div>
+                
+            {/* Progress Bar */}
+            <div className="mt-4 max-w-xs mx-auto">
+              <div className="w-full bg-gray-200 rounded-full h-1">
+                <div 
+                  className="bg-blue-600 h-1 rounded-full transition-all duration-500"
+                  style={{ width: `${((currentService + 1) / services.length) * 100}%` }}
+                />
               </div>
             </div>
           </div>
@@ -425,151 +805,321 @@ export default function Hero() {
       </section>
 
       {/* What is GEO Section */}
-      <section className="relative w-full py-16 px-4 bg-gradient-to-b from-white to-gray-50">
+       <section className="relative w-full py-32 px-4 bg-white">
         {/* Container */}
-        <div className="max-w-7xl mx-auto">
-          {/* Header */}
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-              What is GEO <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">(Generative Engine Optimization)</span>?
+         <div className="max-w-6xl mx-auto">
+           {/* Header - Main Title */}
+           <div className="mb-24">
+             <div className="max-w-4xl">
+               <div className="text-sm font-light text-gray-500 uppercase tracking-widest mb-6">■ Overview</div>
+               <div className="w-full h-px bg-gray-200 mb-8"></div>
+                               <h2 className={`${inter.className} text-4xl font-normal text-gray-900 mb-8 leading-[1.1]`}>
+                  What is GEO (Generative Engine Optimization)?
             </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+                <p className="text-xl text-gray-500 leading-relaxed max-w-3xl font-light">
               The landscape of search and discovery is evolving. Here's how GEO is different.
             </p>
+                    </div>
           </div>
 
-          {/* Main Content Grid */}
-          <div className="grid md:grid-cols-2 gap-8 md:gap-16">
-            {/* Status Quo Side */}
-            <div className="space-y-8">
-              <div className="flex items-center gap-4 mb-6">
-                <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
-                  <span className="text-2xl">🔍</span>
+                       {/* What search used to look like */}
+            <div className="mb-32">
+              <div className="grid lg:grid-cols-2 gap-20 items-start">
+               {/* Traditional Search Visual */}
+               <div className="relative">
+                 <div className="bg-gray-50 rounded-3xl p-8 border border-gray-200">
+                   {/* Browser mockup */}
+                   <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden">
+                     {/* Browser header */}
+                     <div className="bg-gray-100 px-4 py-3 border-b border-gray-200">
+                       <div className="flex items-center gap-2">
+                         <div className="w-3 h-3 bg-red-400 rounded-full"></div>
+                         <div className="w-3 h-3 bg-yellow-400 rounded-full"></div>
+                         <div className="w-3 h-3 bg-green-400 rounded-full"></div>
+                         <div className="ml-4 flex-1 bg-white rounded-md px-3 py-1 text-sm text-gray-500">
+                           google.com/search?q=best+marketing...
                 </div>
-                <h3 className="text-2xl font-semibold text-gray-900">The Status Quo</h3>
               </div>
-              <div className="bg-white rounded-2xl p-8 shadow-lg border border-gray-100">
-                <p className="text-gray-700 text-lg leading-relaxed">
-                  Businesses are still optimizing for Google—stuffing keywords, chasing backlinks, and ranking for SERPs—while missing the fact that LLMs like ChatGPT and Claude are becoming the new interface for discovery.
-                </p>
-                <div className="mt-6 space-y-4">
-                  <div className="flex items-start gap-3">
-                    <div className="w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0 mt-1">
-                      <span className="text-blue-600 text-sm">1</span>
                     </div>
-                    <p className="text-gray-600">Focus on traditional search engine rankings</p>
+                     
+                     {/* Search results */}
+                     <div className="p-6">
+                       {/* Search bar */}
+                       <div className="flex items-center gap-3 mb-6">
+                         <Image src="/orbit/Google.png" alt="Google" width={24} height={24} />
+                         <div className="flex-1 border rounded-full px-4 py-2 text-sm text-gray-400">
+                           best marketing agencies
                   </div>
-                  <div className="flex items-start gap-3">
-                    <div className="w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0 mt-1">
-                      <span className="text-blue-600 text-sm">2</span>
                     </div>
-                    <p className="text-gray-600">Keyword optimization and backlink building</p>
+                  
+                       {/* Blue links */}
+                       <div className="space-y-5">
+                         <div>
+                           <div className="h-4 bg-blue-600 rounded w-4/5 mb-2"></div>
+                           <div className="h-2 bg-gray-300 rounded w-full mb-1"></div>
+                           <div className="h-2 bg-gray-300 rounded w-3/4"></div>
                   </div>
-                  <div className="flex items-start gap-3">
-                    <div className="w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0 mt-1">
-                      <span className="text-blue-600 text-sm">3</span>
+                         <div>
+                           <div className="h-4 bg-blue-600 rounded w-5/6 mb-2"></div>
+                           <div className="h-2 bg-gray-300 rounded w-full mb-1"></div>
+                           <div className="h-2 bg-gray-300 rounded w-2/3"></div>
                     </div>
-                    <p className="text-gray-600">Technical SEO and metadata optimization</p>
+                         <div>
+                           <div className="h-4 bg-blue-600 rounded w-3/4 mb-2"></div>
+                           <div className="h-2 bg-gray-300 rounded w-5/6 mb-1"></div>
+                           <div className="h-2 bg-gray-300 rounded w-4/5"></div>
                   </div>
+                         <div>
+                           <div className="h-4 bg-blue-600 rounded w-4/5 mb-2"></div>
+                           <div className="h-2 bg-gray-300 rounded w-full mb-1"></div>
+                           <div className="h-2 bg-gray-300 rounded w-1/2"></div>
+                </div>
+              </div>
+            </div>
                 </div>
               </div>
             </div>
 
-            {/* GEO Side */}
-            <div className="space-y-8">
-              <div className="flex items-center gap-4 mb-6">
-                <div className="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center">
-                  <span className="text-2xl">🚀</span>
-                </div>
-                <h3 className="text-2xl font-semibold text-gray-900">Enter: GEO</h3>
-              </div>
-              <div className="bg-white rounded-2xl p-8 shadow-lg border border-gray-100">
-                <p className="text-gray-700 text-lg leading-relaxed">
-                  GEO is built for the AI era, optimizing content to be discovered, cited, and recommended by AI engines. It's about creating content that AI systems understand, trust, and prioritize in their responses.
-                </p>
-                <div className="mt-6 space-y-4">
-                  <div className="flex items-start gap-3">
-                    <div className="w-6 h-6 rounded-full bg-purple-100 flex items-center justify-center flex-shrink-0 mt-1">
-                      <span className="text-purple-600 text-sm">1</span>
+                               {/* Explanation */}
+                <div className="relative lg:pt-12">
+                  <h3 className="text-4xl font-light text-gray-900 mb-8 leading-tight">
+                    What search used to look like
+                  </h3>
+                  <p className="text-xl text-gray-500 leading-relaxed mb-12 font-light">
+                   The traditional "10 blue links" dominated search for decades. Users would scan through multiple pages, clicking links to find information scattered across different websites.
+                 </p>
+                 
+                                   <div className="space-y-6">
+                    <div className="flex items-start gap-4">
+                      <div className="w-2 h-2 bg-blue-600 rounded-full mt-3 flex-shrink-0"></div>
+                      <p className="text-gray-500 text-lg font-light">Click through multiple websites</p>
                     </div>
-                    <p className="text-gray-600">Optimized for AI understanding and citation</p>
+                    <div className="flex items-start gap-4">
+                      <div className="w-2 h-2 bg-blue-600 rounded-full mt-3 flex-shrink-0"></div>
+                      <p className="text-gray-500 text-lg font-light">Compare information from different sources</p>
                   </div>
-                  <div className="flex items-start gap-3">
-                    <div className="w-6 h-6 rounded-full bg-purple-100 flex items-center justify-center flex-shrink-0 mt-1">
-                      <span className="text-purple-600 text-sm">2</span>
+                    <div className="flex items-start gap-4">
+                      <div className="w-2 h-2 bg-blue-600 rounded-full mt-3 flex-shrink-0"></div>
+                      <p className="text-gray-500 text-lg font-light">Spend time synthesizing answers</p>
                     </div>
-                    <p className="text-gray-600">Structured for LLM comprehension and recall</p>
                   </div>
-                  <div className="flex items-start gap-3">
-                    <div className="w-6 h-6 rounded-full bg-purple-100 flex items-center justify-center flex-shrink-0 mt-1">
-                      <span className="text-purple-600 text-sm">3</span>
                     </div>
-                    <p className="text-gray-600">Enhanced for AI-powered discovery systems</p>
                   </div>
                 </div>
+                
+                       {/* What search is now */}
+            <div className="mb-32">
+              <div className="grid lg:grid-cols-5 gap-12 items-center">
+                               {/* Modern Search Explanation - Takes 2 columns */}
+                <div className="lg:col-span-2 relative">
+                  <h3 className="text-3xl font-light text-gray-900 mb-6 leading-tight">
+                    What search is now
+                  </h3>
+                  <p className="text-lg text-gray-500 leading-relaxed mb-8 font-light">
+                   AI engines like ChatGPT, Claude, and Gemini provide direct answers with clear source citations. Users get comprehensive responses without the need to visit multiple websites.
+                 </p>
+                 
+                                   <div className="space-y-4">
+                    <div className="flex items-start gap-3">
+                      <div className="w-2 h-2 bg-blue-600 rounded-full mt-2 flex-shrink-0"></div>
+                      <p className="text-gray-500 font-light">Get direct, comprehensive answers</p>
               </div>
+                    <div className="flex items-start gap-3">
+                      <div className="w-2 h-2 bg-blue-600 rounded-full mt-2 flex-shrink-0"></div>
+                      <p className="text-gray-500 font-light">See clearly cited sources</p>
+                  </div>
+                    <div className="flex items-start gap-3">
+                      <div className="w-2 h-2 bg-blue-600 rounded-full mt-2 flex-shrink-0"></div>
+                      <p className="text-gray-500 font-light">Save time with synthesized information</p>
+                    </div>
             </div>
           </div>
 
-          {/* Bottom Summary */}
-          <div className="mt-16 flex justify-center">
+                               {/* AI Citation Example - Takes 3 columns for MAXIMUM size */}
+                <div className="lg:col-span-3 relative w-full">
+                  <Image 
+                    src="/gptantifragility.png" 
+                    alt="AI Citation Example" 
+                    width={2400}
+                    height={900}
+                    className="rounded-2xl shadow-2xl w-full h-auto"
+                  />
+                </div>
+            </div>
+          </div>
+
+           {/* Bottom CTA */}
+           <div className="text-center">
             <button
               type="button"
-              onClick={() => setShowBooking(true)}
-              className="px-8 py-4 border-2 border-blue-600 text-blue-600 hover:bg-blue-50 text-lg font-bold rounded-lg shadow-lg transition-colors flex items-center gap-2"
+              onClick={() => {
+                try {
+                  if (typeof window !== 'undefined' && window.Calendly) {
+                    window.Calendly.initPopupWidget({url: 'https://calendly.com/noah-barbaros/introductory-chat'});
+                  } else {
+                    window.open('https://calendly.com/noah-barbaros/introductory-chat', '_blank');
+                  }
+                } catch (error) {
+                  window.open('https://calendly.com/noah-barbaros/introductory-chat', '_blank');
+                }
+              }}
+               className="px-12 py-4 text-white font-medium rounded-2xl hover:opacity-90 transition-colors"
+               style={{backgroundColor: '#1d40b0'}}
             >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="4"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
-              Book a Free Chat!
+               Get your first AI citation now →
             </button>
           </div>
         </div>
       </section>
 
+      {/* Stats Section - Similar to Mailchimp */}
+      <section className="relative w-full text-white h-[568px]" style={{backgroundColor: '#1d40b0'}}>
+        <div className="max-w-6xl mx-auto px-4 h-full">
+          <div className="grid lg:grid-cols-2 gap-16 items-center h-full">
+            {/* Left Side - Main Content */}
+            <div className="flex flex-col justify-center">
+              <h2 className={`${inter.className} text-4xl md:text-5xl font-light mb-8 leading-tight`}>
+                Find out why we're<br />
+                <span className="font-medium">best-in-class</span>
+              </h2>
+              <p className={`${inter.className} text-lg md:text-xl leading-relaxed opacity-90 font-light max-w-lg`}>
+                The #1 GEO and SEO agency that gets you visibility, traffic, and sales, in both AI and search engines alike.
+              </p>
+            </div>
+
+            {/* Right Side - Stats Grid */}
+            <div className="flex flex-wrap justify-center">
+              {/* Stat 1 */}
+              <div className="w-1/2 text-center lg:text-left flex flex-col justify-center" style={{marginBottom: '1rem', paddingRight: '1rem'}}>
+                <div className={`${inter.className} text-3xl md:text-4xl font-bold mb-2`}>
+                  15x Growth in Impressions
+                </div>
+                <div className={`${inter.className} text-sm opacity-80 font-light`}>
+                  Seen by our clients*
+                </div>
+              </div>
+
+              {/* Stat 2 */}
+              <div className="w-1/2 text-center lg:text-left flex flex-col justify-center" style={{marginBottom: '1rem', paddingLeft: '1rem'}}>
+                <div className={`${inter.className} text-3xl md:text-4xl font-bold mb-2`}>
+                  5x Increase in Clicks
+                </div>
+                <div className={`${inter.className} text-sm opacity-80 font-light`}>
+                  Seen by our clients*
+                </div>
+              </div>
+
+              {/* Stat 3 */}
+              <div className="w-1/2 text-center lg:text-left flex flex-col justify-center" style={{marginTop: '1rem', paddingRight: '1rem'}}>
+                <div className={`${inter.className} text-3xl md:text-4xl font-bold mb-2`}>
+                  Page 1 Rankings
+                </div>
+                <div className={`${inter.className} text-sm opacity-80 font-light`}>
+                  For all competitive keywords*
+                </div>
+              </div>
+
+              {/* Stat 4 */}
+              <div className="w-1/2 text-center lg:text-left flex flex-col justify-center" style={{marginTop: '1rem', paddingLeft: '1rem'}}>
+                <div className={`${inter.className} text-3xl md:text-4xl font-bold mb-2`}>
+                  Over 1000 AI Citations
+                </div>
+                <div className={`${inter.className} text-sm opacity-80 font-light`}>
+                  Won across AI platforms*
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* GEO + SEO Story Banner */}
-      <div className="w-full overflow-x-hidden">
-        <div className="w-full bg-gray-100 rounded-lg py-12 px-2 md:px-0 mb-24">
+      <div className="w-full overflow-x-hidden py-24">
+        <div className="w-full bg-gray-100 rounded-lg py-16 px-2 md:px-0">
           <div className="max-w-5xl mx-auto text-center">
-            <h2 className="text-2xl md:text-3xl font-extrabold leading-tight text-gray-900 font-mono">
+            <h2 className="text-2xl md:text-3xl font-light leading-tight text-gray-900 font-mono">
               Your all-in-one agency for ranking from search engines like Google, to AI like ChatGPT.
             </h2>
           </div>
         </div>
       </div>
 
-      {/* Why Now Section - Swipeable Carousel */}
+      {/* Why Now Section - Smooth Auto-Carousel */}
       <section className="relative w-full px-0 bg-black">
         <div className="relative w-full min-h-[480px] flex flex-col justify-center overflow-hidden py-20 md:py-28">
-          {/* Full-bleed background image */}
-          <Image
-            src={stats[current].image}
-            alt=""
-            fill
-            className="object-cover w-full h-full absolute inset-0 z-0"
-            priority
-          />
+          {/* Background images with smooth transitions */}
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={current}
+              initial={{ opacity: 0, scale: 1.1 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 1.1 }}
+              transition={{ 
+                duration: 1.2, 
+                ease: "easeInOut",
+                opacity: { duration: 0.8 },
+                scale: { duration: 1.2 }
+              }}
+              className="absolute inset-0 z-0"
+            >
+              <Image
+                src={stats[current].image}
+                alt=""
+                fill
+                className="object-cover w-full h-full"
+                priority
+              />
+            </motion.div>
+          </AnimatePresence>
+          
           {/* Dark overlay */}
           <div className="absolute inset-0 bg-black/70 z-10" />
-          {/* Content */}
-          <div className="relative z-20 w-full h-full flex flex-col justify-center items-start px-4 md:px-24">
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white mb-4 drop-shadow-lg text-left leading-tight max-w-4xl">
-              {stats[current].title}
-            </h2>
-            <div className="text-lg md:text-xl text-white/90 mb-4 max-w-2xl drop-shadow-md text-left">
-              {stats[current].desc}
-            </div>
-            <div className="mb-6">
-              <a href={stats[current].source.url} target="_blank" rel="noopener noreferrer" className="inline-block text-sm font-semibold text-blue-200 underline hover:text-white transition-colors">
-                {stats[current].source.label}
-              </a>
-            </div>
-            <button
-              type="button"
-              onClick={() => setShowBooking(true)}
-              className="px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white text-lg font-bold rounded-lg shadow-lg transition-colors"
+          
+          {/* Content with smooth transitions */}
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={`content-${current}`}
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -30 }}
+              transition={{ 
+                duration: 0.8, 
+                ease: "easeOut",
+                delay: 0.2
+              }}
+              className="relative z-20 w-full h-full flex flex-col justify-center items-start px-4 md:px-24"
             >
-              Contact us to learn more
-            </button>
-          </div>
+              <h2 className={`${inter.className} text-4xl md:text-5xl lg:text-6xl font-medium text-white mb-4 drop-shadow-lg text-left leading-tight max-w-4xl`}>
+                {stats[current].title}
+              </h2>
+              <div className={`${inter.className} text-lg md:text-xl text-white/90 mb-4 max-w-2xl drop-shadow-md text-left font-light`}>
+                {stats[current].desc}
+              </div>
+              <div className="mb-6">
+                <a href={stats[current].source.url} target="_blank" rel="noopener noreferrer" className="inline-block text-sm font-semibold text-blue-200 underline hover:text-white transition-colors">
+                  {stats[current].source.label}
+                </a>
+              </div>
+              <button
+                type="button"
+                onClick={() => {
+                  try {
+                    if (typeof window !== 'undefined' && window.Calendly) {
+                      window.Calendly.initPopupWidget({url: 'https://calendly.com/noah-barbaros/introductory-chat'});
+                    } else {
+                      window.open('https://calendly.com/noah-barbaros/introductory-chat', '_blank');
+                    }
+                  } catch (error) {
+                    window.open('https://calendly.com/noah-barbaros/introductory-chat', '_blank');
+                  }
+                }}
+                className="px-8 py-4 text-white text-lg font-bold rounded-lg shadow-lg transition-colors hover:opacity-90"
+                style={{backgroundColor: '#1d40b0'}}
+              >
+                Contact us to learn more
+              </button>
+            </motion.div>
+          </AnimatePresence>
           {/* Arrows */}
           <button onClick={() => {
             setDirection(-1);
@@ -601,33 +1151,37 @@ export default function Hero() {
       </section>
 
       {/* Why Antifragility Section */}
-      <section id="why-antifragility" className="relative w-full py-28 px-0 bg-gradient-to-br from-blue-50 via-purple-50 to-white overflow-hidden">
-        {/* Abstract SVG background illustration */}
-        <svg className="absolute left-1/2 top-0 -translate-x-1/2 opacity-20 w-[900px] h-[340px] pointer-events-none select-none" viewBox="0 0 900 340" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <ellipse cx="450" cy="170" rx="420" ry="120" fill="url(#antifragile-gradient)" />
-          <path d="M120 200 Q 450 60 780 200" stroke="#6366f1" strokeWidth="8" strokeLinecap="round" fill="none"/>
-          <path d="M200 120 Q 450 300 700 120" stroke="#a78bfa" strokeWidth="6" strokeLinecap="round" fill="none"/>
+      <section id="why-antifragility" className="relative w-full py-28 px-0 bg-gradient-to-br from-gray-50 via-white to-gray-50 overflow-hidden">
+        {/* Elegant curved background elements */}
+        <svg className="absolute left-1/2 top-0 -translate-x-1/2 opacity-10 w-[900px] h-[340px] pointer-events-none select-none" viewBox="0 0 900 340" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <ellipse cx="450" cy="170" rx="420" ry="120" fill="url(#brand-gradient)" />
+          <path d="M120 200 Q 450 60 780 200" stroke="#1d40b0" strokeWidth="3" strokeLinecap="round" fill="none"/>
+          <path d="M200 120 Q 450 300 700 120" stroke="#1d40b0" strokeWidth="2" strokeLinecap="round" fill="none" opacity="0.6"/>
           <defs>
-            <linearGradient id="antifragile-gradient" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0%" stopColor="#c7d2fe" />
-              <stop offset="100%" stopColor="#f3e8ff" />
+            <linearGradient id="brand-gradient" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stopColor="#1d40b0" stopOpacity="0.08" />
+              <stop offset="100%" stopColor="#1d40b0" stopOpacity="0.02" />
             </linearGradient>
           </defs>
         </svg>
+        
         <div className="relative max-w-3xl mx-auto px-6">
-          {/* Accent chip */}
+          {/* Elegant accent chip with halo */}
           <div className="flex justify-center mb-6">
-            <span className="flex items-center gap-2 px-4 py-2 bg-white/70 backdrop-blur-md border border-blue-200 rounded-full text-blue-700 font-semibold shadow-sm text-sm">
-              <svg className="w-5 h-5 text-blue-500" fill="none" viewBox="0 0 20 20" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 4v8m0 0l3-3m-3 3l-3-3" /></svg>
+            <span className="flex items-center gap-2 px-4 py-2 bg-white/90 backdrop-blur-md border border-gray-200 rounded-full font-semibold shadow-lg text-sm" style={{color: '#1d40b0', boxShadow: '0 8px 32px rgba(29, 64, 176, 0.15)'}}>
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 20 20" stroke="currentColor" style={{color: '#1d40b0'}}>
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 4v8m0 0l3-3m-3 3l-3-3" />
+              </svg>
               Our Philosophy
             </span>
           </div>
-          {/* Glassmorphic card */}
-          <div className="bg-white/80 backdrop-blur-md rounded-2xl shadow-xl border border-blue-100 px-8 py-14 text-center">
-            <h2 className="text-2xl md:text-3xl font-bold mb-6 text-gray-900 leading-tight">Why Antifragility</h2>
+          
+          {/* Glassmorphic card with subtle enhancement */}
+          <div className="bg-white/90 backdrop-blur-md rounded-2xl shadow-xl border border-gray-200 px-8 py-14 text-center" style={{boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(255, 255, 255, 0.9)'}}>
+            <h2 className={`${inter.className} text-2xl md:text-3xl font-light text-gray-900 mb-6 leading-tight`}>The Antifragile Way</h2>
             <p className="text-lg md:text-xl text-gray-700 mb-6 leading-relaxed font-normal">Most companies aim to be resilient — to survive shocks. We aim higher.</p>
             <p className="text-base md:text-lg text-gray-600 mb-8 leading-relaxed font-normal">Antifragile systems don't just survive stress — they get stronger because of it. That's the core of how we operate: every client project, failed test, or algorithm shift becomes a feedback loop. We learn. We adapt. We evolve.</p>
-            <p className="text-lg md:text-xl text-blue-700 font-semibold leading-relaxed mt-10 underline decoration-blue-300 decoration-4">In an ecosystem as unpredictable as AI search, fragility breaks, resilience endures, but antifragility wins.</p>
+            <p className="text-lg md:text-xl font-semibold leading-relaxed mt-10" style={{color: '#1d40b0'}}>In an ecosystem as unpredictable as AI search, fragility breaks, resilience endures, but antifragility wins.</p>
           </div>
         </div>
       </section>
@@ -635,95 +1189,54 @@ export default function Hero() {
       {/* FAQ Accordion Section */}
       <section id="faqs" className="w-full bg-white py-16 px-4">
         <div className="max-w-3xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-extrabold text-center mb-10 text-gray-900">Frequently Asked Questions</h2>
+          <h2 className={`${inter.className} text-3xl md:text-4xl font-light text-center mb-10 text-gray-900`}>Frequently Asked Questions</h2>
           <FAQAccordion />
         </div>
       </section>
 
-      {/* 2nd CTA Section */}
-      <section className="w-full flex flex-col items-center justify-center py-24 px-4 bg-gradient-to-br from-blue-50 via-white to-purple-50">
-        <div className="relative w-full max-w-5xl flex flex-col md:flex-row items-center justify-between gap-24 mx-auto">
-          {/* Left: Immersive Live Dashboard Mockup */}
-          <div className="flex-1 w-full md:w-1/2 flex justify-center items-center mb-12 md:mb-0">
-            <div className="relative group">
-              {/* Glassmorphic background glow */}
-              <div className="absolute -inset-4 bg-gradient-to-br from-blue-200/30 via-purple-200/20 to-white/0 rounded-3xl blur-2xl z-0" />
-              <div className="relative w-full max-w-lg bg-white/80 backdrop-blur-md rounded-3xl shadow-2xl border border-blue-100 p-8 flex flex-col gap-6 items-center justify-center transition-transform duration-300 group-hover:scale-105 group-hover:shadow-blue-200/60" style={{boxShadow: '0 8px 40px 0 rgba(80,100,200,0.10)'}}>
-                {/* Large Chart (shorter height) */}
-                <div className="w-full h-36 md:h-44 flex items-center justify-center mb-4">
-                  <svg viewBox="0 0 420 140" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
-                    <defs>
-                      <linearGradient id="chart-gradient" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="0%" stopColor="#6366f1" stopOpacity="0.18" />
-                        <stop offset="100%" stopColor="#6366f1" stopOpacity="0.02" />
-                      </linearGradient>
-                    </defs>
-                    <path d="M20 110L80 40L140 80L200 20L260 80L320 30L400 90" stroke="#6366f1" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round"/>
-                    <polyline points="20,110 80,40 140,80 200,20 260,80 320,30 400,90" fill="url(#chart-gradient)" />
-                    <circle cx="80" cy="40" r="10" fill="#6366f1" fillOpacity="0.18" />
-                    <circle cx="200" cy="20" r="10" fill="#3b82f6" fillOpacity="0.18" />
-                    <circle cx="320" cy="30" r="10" fill="#22c55e" fillOpacity="0.18" />
-                    <circle cx="400" cy="90" r="10" fill="#a78bfa" fillOpacity="0.18" />
-                  </svg>
-                </div>
-                <div className="mt-2 text-xs text-blue-500 font-mono bg-blue-50/60 px-3 py-1 rounded-full inline-block">Live Data</div>
-                {/* Metric Cards */}
-                <div className="flex flex-col gap-4 w-full">
-                  <div className="flex flex-row gap-4 w-full">
-                    {/* Revenue Card */}
-                    <div className="flex-1 bg-white/90 rounded-xl p-4 shadow border border-blue-100 flex flex-col items-center">
-                      <span className="text-xs font-semibold text-gray-500 mb-1">Revenue</span>
-                      <span className="text-xl md:text-2xl font-bold text-blue-700 flex items-center gap-1">$8,420 <svg className="w-5 h-5 text-green-500" fill="none" viewBox="0 0 20 20" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 10l4 4 6-8" /></svg></span>
-                      <span className="text-xs text-green-600 font-semibold mt-1">+12% this month</span>
-                    </div>
-                    {/* Leads Card */}
-                    <div className="flex-1 bg-white/90 rounded-xl p-4 shadow border border-purple-100 flex flex-col items-center">
-                      <span className="text-xs font-semibold text-gray-500 mb-1">Leads</span>
-                      <span className="text-xl md:text-2xl font-bold text-purple-600 flex items-center gap-1">+127 <svg className="w-5 h-5 text-green-500" fill="none" viewBox="0 0 20 20" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 10l4 4 6-8" /></svg></span>
-                      <span className="text-xs text-green-600 font-semibold mt-1">+8% this month</span>
-                    </div>
-                  </div>
-                  <div className="flex flex-row gap-4 w-full">
-                    {/* AI Citations Card */}
-                    <div className="flex-1 bg-white/90 rounded-xl p-4 shadow border border-green-100 flex flex-col items-center">
-                      <span className="text-xs font-semibold text-gray-500 mb-1">AI Citations</span>
-                      <span className="text-xl md:text-2xl font-bold text-green-600 flex items-center gap-1">23 <svg className="w-5 h-5 text-green-500" fill="none" viewBox="0 0 20 20" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 10l4 4 6-8" /></svg></span>
-                      <span className="text-xs text-green-600 font-semibold mt-1">+5 this week</span>
-                    </div>
-                    {/* Activity Card */}
-                    <div className="flex-1 bg-gradient-to-br from-blue-50 via-purple-50 to-white rounded-xl p-4 shadow border border-blue-100 flex flex-col items-center justify-center">
-                      <span className="text-xs font-semibold text-blue-700 mb-1">Status</span>
-                      <span className="text-base font-bold text-blue-700 flex items-center gap-1"><span className="w-2 h-2 bg-green-400 rounded-full animate-pulse inline-block"></span> Live</span>
-                      <span className="text-xs text-blue-500 mt-1">AI picking up your content</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
+      {/* Get Cited On Section - Simple & Clean */}
+      <section className="w-full flex flex-col items-center justify-center py-12 px-4 bg-white">
+        <div className="w-full max-w-4xl mx-auto text-center">
+          {/* Main Headline with Inline Logo Carousel */}
+          <div className="flex items-center justify-center gap-6 mb-4">
+            <h2 className={`${inter.className} text-4xl md:text-6xl font-light text-gray-900 leading-tight`}>
+              Get cited on
+            </h2>
+            <div className="relative w-56 h-56 md:w-64 md:h-64 flex items-center justify-center">
+              <LogoCarousel />
             </div>
           </div>
-          {/* Right: Text and CTA */}
-          <div className="flex-1 w-full md:w-1/2 flex flex-col items-start justify-center md:pl-12">
-            {/* Accent bar and icon */}
-            <div className="flex items-center gap-2 mb-4">
-              <span className="w-2 h-8 bg-blue-600 rounded-full" />
-              <svg className="w-7 h-7 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M12 19V5m0 0l-7 7m7-7l7 7" /></svg>
-            </div>
-            <h3 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-6 leading-tight">SEO & GEO that actually drives revenue.</h3>
-            <p className="text-xl md:text-2xl text-gray-700 mb-10 max-w-xl leading-relaxed">We don't just optimize for rankings—we build systems that deliver measurable growth, more leads, and real business results. Ready to see the impact?</p>
-            <a
-              href="https://calendly.com/noah-barbaros/introductory-chat?"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-3 px-12 py-6 bg-blue-700 text-white text-2xl font-bold rounded-xl shadow-lg hover:bg-blue-800 transition-all mt-2"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                <rect x="3" y="4" width="18" height="18" rx="4"/>
-                <path d="M16 2v4M8 2v4M3 10h18"/>
-              </svg>
-              Book your free strategy call
-            </a>
-            <span className="mt-4 text-base text-gray-500">No sales pitch. Just actionable insights.</span>
-          </div>
+          
+          <p className={`${inter.className} text-lg md:text-xl text-gray-600 mb-16 max-w-2xl mx-auto font-light`}>
+            Every major AI platform, every search engine, every time someone asks about your industry, we get you there.
+          </p>
+
+          {/* Simple CTA */}
+          <button
+            onClick={() => {
+              try {
+                if (typeof window !== 'undefined' && window.Calendly) {
+                  window.Calendly.initPopupWidget({url: 'https://calendly.com/noah-barbaros/introductory-chat'});
+                } else {
+                  window.open('https://calendly.com/noah-barbaros/introductory-chat', '_blank');
+                }
+              } catch (error) {
+                window.open('https://calendly.com/noah-barbaros/introductory-chat', '_blank');
+              }
+            }}
+            className={`${inter.className} px-8 py-4 text-lg font-medium rounded-lg transition-all border-2 hover:text-white`}
+            style={{backgroundColor: 'transparent', borderColor: '#1d40b0', color: '#1d40b0'}}
+            onMouseEnter={(e) => {
+              e.target.style.backgroundColor = '#1d40b0';
+              e.target.style.color = 'white';
+            }}
+            onMouseLeave={(e) => {
+              e.target.style.backgroundColor = 'transparent';
+              e.target.style.color = '#1d40b0';
+            }}
+          >
+            Get your first AI citation now →
+          </button>
         </div>
       </section>
 
@@ -749,7 +1262,7 @@ export default function Hero() {
                 </button>
               </div>
               <iframe
-                src="https://calendly.com/noah-barbaros/introductory-chat?"
+                src="https://calendly.com/noah-barbaros/introductory-chat"
                 title="Book a Free Chat"
                 className="w-full flex-1 min-h-[500px] md:min-h-[650px] border-0"
                 allow="camera; microphone; fullscreen;"
@@ -834,6 +1347,41 @@ export default function Hero() {
         .card-wipe > * {
           position: relative;
           z-index: 2;
+        }
+        .brand-blue-arrow {
+          color: #1d40b0 !important;
+        }
+        
+        @keyframes text-flip {
+          0% {
+            transform: translateY(0);
+          }
+          16.66% {
+            transform: translateY(-100%);
+          }
+          33.33% {
+            transform: translateY(-200%);
+          }
+          50% {
+            transform: translateY(-300%);
+          }
+          66.66% {
+            transform: translateY(-400%);
+          }
+          83.33% {
+            transform: translateY(-500%);
+          }
+          100% {
+            transform: translateY(-600%);
+          }
+        }
+        
+        .animate-text-flip {
+          animation: text-flip 30s steps(6) infinite !important;
+        }
+        
+        .animate-text-flip:hover {
+          animation-play-state: paused !important;
         }
       `}</style>
     </>

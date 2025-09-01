@@ -1,10 +1,13 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Inter } from 'next/font/google';
+
+const inter = Inter({ subsets: ['latin'] });
 
 const faqs = [
   {
     q: "What's the difference between SEO and GEO?",
-    a: "SEO helps you rank on search engines like Google through links and keywords. GEO helps you rank in AI-generated answers (ChatGPT, SGE, Claude) by optimizing for how LLMs retrieve, rank, and cite sources.",
+    a: "SEO helps you rank on search engines like Google through links and keywords. GEO helps you rank in AI-generated answers (ChatGPT, SGE, Claude) by optimizing for how LLMs retrieve, rank, and cite sources. We do both.",
   },
   {
     q: "Why do I need both SEO and GEO?",
@@ -23,8 +26,12 @@ const faqs = [
     a: "Yes. We can work alongside your SEO team or take the lead — GEO strategies are distinct but complementary.",
   },
   {
-    q: "How do I measure success in GEO?",
-    a: "We track citations, summary mentions, and traffic lift from AI interfaces — not just clicks, but brand presence in AI responses.",
+    q: "How quickly will I see results?",
+    a: "Timeline varies by strategy. With GEO, once optimized pages go live, results can appear almost instantly. Competitive keywords take longer to win, but most brands see their first new citations within days. SEO, on the other hand, is a long game—results typically come in within 3-6 months.",
+  },
+  {
+    q: "Why is now the right time to invest in GEO?",
+    a: "AI tools like ChatGPT, Perplexity, Claude, and Gemini are quickly becoming the go-to starting point for brand discovery. With chatbot traffic more than doubling in the past year—and sites like Zapier now getting nearly half their referrals from AI instead of Google—investing in GEO today means staying ahead of the curve before your competitors catch up.",
   },
 ];
 
@@ -33,21 +40,35 @@ export default function FAQAccordion() {
 
   return (
     <>
-      <div className="divide-y divide-blue-100 rounded-2xl shadow-xl bg-white overflow-hidden">
+      <div className="space-y-4">
         {faqs.map((faq, i) => (
-          <div key={faq.q}>
+          <div key={faq.q} className="bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-all duration-200">
             <button
-              className="w-full flex items-center justify-between px-6 py-5 text-left focus:outline-none focus:bg-blue-50 transition-colors group"
+              className="w-full flex items-center justify-between px-8 py-6 text-left focus:outline-none transition-all duration-200 group rounded-xl"
+              style={{
+                backgroundColor: open === i ? 'rgba(29, 64, 176, 0.02)' : 'transparent'
+              }}
               onClick={() => setOpen(open === i ? null : i)}
               aria-expanded={open === i}
             >
-              <span className="text-lg md:text-xl font-semibold text-gray-900 group-hover:text-blue-700 transition-colors">{faq.q}</span>
-              <motion.span
-                animate={{ rotate: open === i ? 90 : 0 }}
-                className="ml-4 text-blue-600"
+              <span className={`${inter.className} text-lg md:text-xl font-light text-gray-900 transition-colors group-hover:text-gray-700 pr-4`}>
+                {faq.q}
+              </span>
+              <motion.div
+                animate={{ rotate: open === i ? 180 : 0 }}
+                className="flex-shrink-0 w-6 h-6 flex items-center justify-center"
+                transition={{ duration: 0.2 }}
               >
-                ▶
-              </motion.span>
+                <svg 
+                  className="w-5 h-5" 
+                  fill="none" 
+                  viewBox="0 0 24 24" 
+                  stroke="currentColor" 
+                  style={{color: '#1d40b0'}}
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </motion.div>
             </button>
             <AnimatePresence initial={false}>
               {open === i && (
@@ -57,29 +78,19 @@ export default function FAQAccordion() {
                   animate={{ height: 'auto', opacity: 1 }}
                   exit={{ height: 0, opacity: 0 }}
                   transition={{ duration: 0.3, ease: 'easeInOut' }}
-                  className="overflow-hidden px-6 pb-5 text-gray-700 text-base md:text-lg bg-blue-50/40"
+                  className="overflow-hidden"
                 >
-                  {faq.a}
+                  <div className={`${inter.className} px-8 pb-6 text-gray-600 text-base md:text-lg leading-relaxed font-light`}>
+                    {faq.a}
+                  </div>
                 </motion.div>
               )}
             </AnimatePresence>
           </div>
         ))}
       </div>
-      <div className="flex justify-center mt-8">
-        <a
-          href="https://calendly.com/noah-barbaros/introductory-chat?"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex items-center gap-3 px-8 py-4 bg-white border-2 border-blue-600 text-blue-700 text-lg font-bold rounded-xl shadow-md hover:bg-blue-50 transition-all"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-            <rect x="3" y="4" width="18" height="18" rx="4"/>
-            <path d="M16 2v4M8 2v4M3 10h18"/>
-          </svg>
-          Have more questions? Let's chat!
-        </a>
-      </div>
+      
+
     </>
   );
 } 

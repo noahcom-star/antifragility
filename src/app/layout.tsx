@@ -7,7 +7,7 @@ const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: 'GEO & SEO Consulting | AI-Powered Growth Strategies',
-  description: 'We blend Generative Engine Optimization (GEO) and Search Engine Optimization (SEO) to build growth systems that scale with you — and the AI era.',
+  description: 'We blend Generative Engine Optimization & Search Engine Optimization to build growth systems that scale with you — and the AI era.',
 };
 
 export default function RootLayout({
@@ -17,6 +17,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head>
+        <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet" />
+        <script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript" async></script>
+      </head>
       <body className={inter.className}>
         {children}
         <Footer />
