@@ -1227,12 +1227,14 @@ export default function Hero() {
             className={`${inter.className} px-8 py-4 text-lg font-medium rounded-lg transition-all border-2 hover:text-white`}
             style={{backgroundColor: 'transparent', borderColor: '#1d40b0', color: '#1d40b0'}}
             onMouseEnter={(e) => {
-              e.target.style.backgroundColor = '#1d40b0';
-              e.target.style.color = 'white';
+              const target = e.target as HTMLButtonElement;
+              target.style.backgroundColor = '#1d40b0';
+              target.style.color = 'white';
             }}
             onMouseLeave={(e) => {
-              e.target.style.backgroundColor = 'transparent';
-              e.target.style.color = '#1d40b0';
+              const target = e.target as HTMLButtonElement;
+              target.style.backgroundColor = 'transparent';
+              target.style.color = '#1d40b0';
             }}
           >
             Get your first AI citation now →
