@@ -970,26 +970,26 @@ export default function Hero() {
         </div>
       </section>
 
-      {/* Stats Section - Similar to Mailchimp */}
-      <section className="relative w-full text-white h-[568px]" style={{backgroundColor: '#1d40b0'}}>
-        <div className="max-w-6xl mx-auto px-4 h-full">
-          <div className="grid lg:grid-cols-2 gap-16 items-center h-full">
+      {/* Stats Section - Mobile Responsive */}
+      <section className="relative w-full text-white py-16 md:py-24" style={{backgroundColor: '#1d40b0'}}>
+        <div className="max-w-6xl mx-auto px-4">
+          <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center">
             {/* Left Side - Main Content */}
-            <div className="flex flex-col justify-center">
-              <h2 className={`${inter.className} text-4xl md:text-5xl font-light mb-8 leading-tight`}>
+            <div className="flex flex-col justify-center text-center lg:text-left mb-8 lg:mb-0">
+              <h2 className={`${inter.className} text-3xl md:text-4xl lg:text-5xl font-light mb-6 leading-tight`}>
                 Find out why we're<br />
                 <span className="font-medium">best-in-class</span>
               </h2>
-              <p className={`${inter.className} text-lg md:text-xl leading-relaxed opacity-90 font-light max-w-lg`}>
+              <p className={`${inter.className} text-base md:text-lg lg:text-xl leading-relaxed opacity-90 font-light max-w-lg mx-auto lg:mx-0`}>
                 The #1 GEO and SEO agency that gets you visibility, traffic, and sales, in both AI and search engines alike.
               </p>
             </div>
 
             {/* Right Side - Stats Grid */}
-            <div className="flex flex-wrap justify-center">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
               {/* Stat 1 */}
-              <div className="w-1/2 text-center lg:text-left flex flex-col justify-center" style={{marginBottom: '1rem', paddingRight: '1rem'}}>
-                <div className={`${inter.className} text-3xl md:text-4xl font-bold mb-2`}>
+              <div className="text-center lg:text-left">
+                <div className={`${inter.className} text-2xl md:text-3xl lg:text-4xl font-bold mb-2`}>
                   15x Growth in Impressions
                 </div>
                 <div className={`${inter.className} text-sm opacity-80 font-light`}>
@@ -998,8 +998,8 @@ export default function Hero() {
               </div>
 
               {/* Stat 2 */}
-              <div className="w-1/2 text-center lg:text-left flex flex-col justify-center" style={{marginBottom: '1rem', paddingLeft: '1rem'}}>
-                <div className={`${inter.className} text-3xl md:text-4xl font-bold mb-2`}>
+              <div className="text-center lg:text-left">
+                <div className={`${inter.className} text-2xl md:text-3xl lg:text-4xl font-bold mb-2`}>
                   5x Increase in Clicks
                 </div>
                 <div className={`${inter.className} text-sm opacity-80 font-light`}>
@@ -1008,8 +1008,8 @@ export default function Hero() {
               </div>
 
               {/* Stat 3 */}
-              <div className="w-1/2 text-center lg:text-left flex flex-col justify-center" style={{marginTop: '1rem', paddingRight: '1rem'}}>
-                <div className={`${inter.className} text-3xl md:text-4xl font-bold mb-2`}>
+              <div className="text-center lg:text-left">
+                <div className={`${inter.className} text-2xl md:text-3xl lg:text-4xl font-bold mb-2`}>
                   Page 1 Rankings
                 </div>
                 <div className={`${inter.className} text-sm opacity-80 font-light`}>
@@ -1018,8 +1018,8 @@ export default function Hero() {
               </div>
 
               {/* Stat 4 */}
-              <div className="w-1/2 text-center lg:text-left flex flex-col justify-center" style={{marginTop: '1rem', paddingLeft: '1rem'}}>
-                <div className={`${inter.className} text-3xl md:text-4xl font-bold mb-2`}>
+              <div className="text-center lg:text-left">
+                <div className={`${inter.className} text-2xl md:text-3xl lg:text-4xl font-bold mb-2`}>
                   Over 1000 AI Citations
                 </div>
                 <div className={`${inter.className} text-sm opacity-80 font-light`}>
@@ -1044,7 +1044,31 @@ export default function Hero() {
 
       {/* Why Now Section - Smooth Auto-Carousel */}
       <section className="relative w-full px-0 bg-black">
-        <div className="relative w-full min-h-[480px] flex flex-col justify-center overflow-hidden py-20 md:py-28">
+        <div 
+          className="relative w-full min-h-[480px] flex flex-col justify-center overflow-hidden py-20 md:py-28"
+          onTouchStart={(e) => {
+            const touch = e.touches[0];
+            setTouchStart(touch.clientX);
+          }}
+          onTouchEnd={(e) => {
+            if (!touchStart) return;
+            const touch = e.changedTouches[0];
+            const diff = touchStart - touch.clientX;
+            
+            if (Math.abs(diff) > 50) { // Minimum swipe distance
+              if (diff > 0) {
+                // Swipe left - next
+                setDirection(1);
+                setCurrent((current + 1) % stats.length);
+              } else {
+                // Swipe right - previous
+                setDirection(-1);
+                setCurrent((current + stats.length - 1) % stats.length);
+              }
+            }
+            setTouchStart(null);
+          }}
+        >
           {/* Background images with smooth transitions */}
           <AnimatePresence mode="wait">
             <motion.div
@@ -1118,15 +1142,15 @@ export default function Hero() {
               </button>
             </motion.div>
           </AnimatePresence>
-          {/* Arrows */}
+          {/* Arrows - Hidden on mobile */}
           <button onClick={() => {
             setDirection(-1);
             setCurrent((current + stats.length - 1) % stats.length);
-          }} className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/30 hover:bg-white/60 text-white rounded-full p-2 shadow-lg z-20 transition-all"><svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg></button>
+          }} className="hidden md:block absolute left-4 top-1/2 -translate-y-1/2 bg-white/30 hover:bg-white/60 text-white rounded-full p-2 shadow-lg z-20 transition-all"><svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg></button>
           <button onClick={() => {
             setDirection(1);
             setCurrent((current + 1) % stats.length);
-          }} className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/30 hover:bg-white/60 text-white rounded-full p-2 shadow-lg z-20 transition-all"><svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg></button>
+          }} className="hidden md:block absolute right-4 top-1/2 -translate-y-1/2 bg-white/30 hover:bg-white/60 text-white rounded-full p-2 shadow-lg z-20 transition-all"><svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg></button>
           <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2 z-20">
             {stats.map((_, i: number) => (
               <button key={i} onClick={() => setCurrent(i)} className={`w-3 h-3 rounded-full transition-all ${i === current ? 'bg-white' : 'bg-white/40'}`}></button>
