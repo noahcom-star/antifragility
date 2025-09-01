@@ -110,6 +110,7 @@ export default function Hero() {
   const [current, setCurrent] = useState(0);
   const [direction, setDirection] = useState(0);
   const [currentService, setCurrentService] = useState(0);
+  const [touchStart, setTouchStart] = useState<number | null>(null);
 
   const stats = [
     {
@@ -1046,11 +1047,11 @@ export default function Hero() {
       <section className="relative w-full px-0 bg-black">
         <div 
           className="relative w-full min-h-[480px] flex flex-col justify-center overflow-hidden py-20 md:py-28"
-          onTouchStart={(e) => {
+          onTouchStart={(e: React.TouchEvent) => {
             const touch = e.touches[0];
             setTouchStart(touch.clientX);
           }}
-          onTouchEnd={(e) => {
+          onTouchEnd={(e: React.TouchEvent) => {
             if (!touchStart) return;
             const touch = e.changedTouches[0];
             const diff = touchStart - touch.clientX;
